@@ -24,7 +24,7 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     void changeListenerCallback(ChangeBroadcaster* source) override;
-    
+
 private:
     void updateSliderColours();
     Label sourceCoordinateLabel;
@@ -106,6 +106,11 @@ private:
       TextButton filtersButton;
       AudioProcessorValueTreeState::ButtonAttachment filtersButtonAttachment;
     
+    
+    // CONVOLUTION
+    TextButton mButtonChooseIR;
+    AudioProcessorValueTreeState::ButtonAttachment mButtonChooseIRButtonAttachment;
+
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

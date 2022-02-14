@@ -8,6 +8,8 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "Convolution/util/SincFilter.hpp"
+#include "Convolution/util/util.h"
 
 //==============================================================================
 EarlyReflectionsAudioProcessor::EarlyReflectionsAudioProcessor()
@@ -146,9 +148,40 @@ void EarlyReflectionsAudioProcessor::changeProgramName (int index, const juce::S
 {
 }
 
+void EarlyReflectionsAudioProcessor::setImpulseResponse(const AudioSampleBuffer& impulseResponseBuffer, const juce::String pathToImpulse)
+{
+    juce::ScopedLock lock(mLoadingLock);
+    mImpulseResponseFilePath = pathToImpulse;
+    AudioSampleBuffer impulseResponse(impulseResponseBuffer);
+    
+    if (impulseResponseBuffer.getNumChannels() == 2)
+    {
+        float *impulseResponseLeft = impulseResponse.getWritePointer(0);
+        float *impulseResponseRight = impulseResponse.getWritePointer(1);
+        
+        normalizeStereoImpulseResponse(impulseResponseLeft, impulseResponseRight, impulseResponse.getNumSamples());
+        mConvolutionManager[0].setImpulseResponse(impulseResponseLeft, impulseResponse.getNumSamples());
+        mConvolutionManager[1].setImpulseResponse(impulseResponseRight, impulseResponse.getNumSamples());
+    }
+    else
+    {
+        float *ir = impulseResponse.getWritePointer(0);
+        
+        normalizeMonoImpulseResponse(ir, impulseResponse.getNumSamples());
+        mConvolutionManager[0].setImpulseResponse(ir, impulseResponse.getNumSamples());
+        mConvolutionManager[1].setImpulseResponse(ir, impulseResponse.getNumSamples());
+    }
+}
+
+
 //==============================================================================
 void EarlyReflectionsAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    
+    // CONV
+    mConvolutionManager[0].setBufferSize(samplesPerBlock);
+    mConvolutionManager[1].setBufferSize(samplesPerBlock);
+
     
     //FILTER
     
@@ -236,12 +269,14 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
     outBuffer[i]= AudioBuffer<float>(buffer.getNumChannels(), buffer.getNumSamples());
     }
 
+    
     // TO DO - FOR CPU? IF ROOMX IS NOT EQUAL TO SLIDER THEN DO THIS
     reflections.setSpeedOfSound(temp);
     reflections.setSize(roomX.getValue(), roomY.getValue(), roomZ.getValue());
     
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
+    
     
     auto inputBlock = dsp::AudioBlock<float>(buffer);
     
@@ -254,65 +289,107 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
     
 
     
+    
     for (int channel = 0; channel < totalNumInputChannels; ++channel){
-        for (int sample = 0 ; sample < buffer.getNumSamples(); ++sample){
+            for (int sample = 0 ; sample < buffer.getNumSamples(); ++sample){
+                
+                reflections.setPositions(sourceXLim,sourceYLim,micXLim,micYLim);
+                
+
+                if(directSoundOnOff){
+                 directSound = inputBlock.getSample(channel,sample)*reflections.sourceMicStereoGain(channel);
+                } else {
+                    directSound = 0.f;
+                }
+                
+             
             
-            reflections.setPositions(sourceXLim,sourceYLim,micXLim,micYLim);
-            
-            if(directSoundOnOff){
-             directSound = inputBlock.getSample(channel,sample)*reflections.sourceMicStereoGain(channel);
-            } else {
-                directSound = 0.f;
+                
+                frontReflection = outputBlock[0].getSample(channel,sample)*reflections.junctionMicStereoGain(0, channel)/fmax(reflections.getDist(0),0.4);
+               
+                backReflection = outputBlock[1].getSample(channel,sample)*reflections.junctionMicStereoGain(1, channel)/fmax(reflections.getDist(1),0.4);
+               
+                rightReflection = outputBlock[2].getSample(channel,sample)*reflections.junctionMicStereoGain(2, channel)/fmax(reflections.getDist(2),0.4);
+               
+                leftReflection = outputBlock[3].getSample(channel,sample)*reflections.junctionMicStereoGain(3, channel)/fmax(reflections.getDist(3),0.4);
+               
+                ceilingReflection = outputBlock[4].getSample(channel,sample)*reflections.junctionMicStereoGain(4, channel)/fmax(reflections.getDist(4),0.4);
+               
+                floorReflection = outputBlock[5].getSample(channel,  sample)*reflections.junctionMicStereoGain(5, channel)/fmax(reflections.getDist(5),0.4);
+                
+                /*
+                if(apfOnOff){
+                     frontReflection = iirFilterFrontBack[channel].process(outputBlock[0].getSample(channel,sample)*reflections.junctionMicStereoGain(0, channel)/fmax(reflections.getDist(0),0.4));
+                    
+                     backReflection = iirFilterFrontBack[channel].process(outputBlock[1].getSample(channel,sample)*reflections.junctionMicStereoGain(1, channel)/fmax(reflections.getDist(1),0.4));
+                    
+                     rightReflection = iirFilterRightLeft[channel].process(outputBlock[2].getSample(channel,sample)*reflections.junctionMicStereoGain(2, channel)/fmax(reflections.getDist(2),0.4));
+                    
+                     leftReflection = iirFilterRightLeft[channel].process(outputBlock[3].getSample(channel,sample)*reflections.junctionMicStereoGain(3, channel)/fmax(reflections.getDist(3),0.4));
+                    
+                     ceilingReflection = iirFilterCeilingFloor[channel].process(outputBlock[4].getSample(channel,sample)*reflections.junctionMicStereoGain(4, channel)/fmax(reflections.getDist(4),0.4));
+                    
+                     floorReflection = iirFilterCeilingFloor[channel].process(outputBlock[5].getSample(channel,sample)*reflections.junctionMicStereoGain(5, channel)/fmax(reflections.getDist(5),0.4));
+                } else {
+                     frontReflection = outputBlock[0].getSample(channel,sample)*reflections.junctionMicStereoGain(0, channel)/fmax(reflections.getDist(0),0.4);
+                    
+                     backReflection = outputBlock[1].getSample(channel,sample)*reflections.junctionMicStereoGain(1, channel)/fmax(reflections.getDist(1),0.4);
+                    
+                     rightReflection = outputBlock[2].getSample(channel,sample)*reflections.junctionMicStereoGain(2, channel)/fmax(reflections.getDist(2),0.4);
+                    
+                     leftReflection = outputBlock[3].getSample(channel,sample)*reflections.junctionMicStereoGain(3, channel)/fmax(reflections.getDist(3),0.4);
+                    
+                     ceilingReflection = outputBlock[4].getSample(channel,sample)*reflections.junctionMicStereoGain(4, channel)/fmax(reflections.getDist(4),0.4);
+                    
+                     floorReflection = outputBlock[5].getSample(channel,  sample)*reflections.junctionMicStereoGain(5, channel)/fmax(reflections.getDist(5),0.4);
+                }
+               */
+                
+                
+           
+                
+                float out = directSound + frontReflection + backReflection + rightReflection + leftReflection + ceilingReflection + floorReflection;
+                            
+                buffer.setSample(channel, sample, out);
             }
-            
-         
-            frontReflection = outputBlock[0].getSample(channel,sample)*reflections.junctionMicStereoGain(0, channel)/fmax(reflections.getDist(0),0.4);
-           
-            backReflection = outputBlock[1].getSample(channel,sample)*reflections.junctionMicStereoGain(1, channel)/fmax(reflections.getDist(1),0.4);
-           
-            rightReflection = outputBlock[2].getSample(channel,sample)*reflections.junctionMicStereoGain(2, channel)/fmax(reflections.getDist(2),0.4);
-           
-            leftReflection = outputBlock[3].getSample(channel,sample)*reflections.junctionMicStereoGain(3, channel)/fmax(reflections.getDist(3),0.4);
-           
-            ceilingReflection = outputBlock[4].getSample(channel,sample)*reflections.junctionMicStereoGain(4, channel)/fmax(reflections.getDist(4),0.4);
-           
-            floorReflection = outputBlock[5].getSample(channel,  sample)*reflections.junctionMicStereoGain(5, channel)/fmax(reflections.getDist(5),0.4);
-            
-            /*
-            if(apfOnOff){
-                 frontReflection = iirFilterFrontBack[channel].process(outputBlock[0].getSample(channel,sample)*reflections.junctionMicStereoGain(0, channel)/fmax(reflections.getDist(0),0.4));
-                
-                 backReflection = iirFilterFrontBack[channel].process(outputBlock[1].getSample(channel,sample)*reflections.junctionMicStereoGain(1, channel)/fmax(reflections.getDist(1),0.4));
-                
-                 rightReflection = iirFilterRightLeft[channel].process(outputBlock[2].getSample(channel,sample)*reflections.junctionMicStereoGain(2, channel)/fmax(reflections.getDist(2),0.4));
-                
-                 leftReflection = iirFilterRightLeft[channel].process(outputBlock[3].getSample(channel,sample)*reflections.junctionMicStereoGain(3, channel)/fmax(reflections.getDist(3),0.4));
-                
-                 ceilingReflection = iirFilterCeilingFloor[channel].process(outputBlock[4].getSample(channel,sample)*reflections.junctionMicStereoGain(4, channel)/fmax(reflections.getDist(4),0.4));
-                
-                 floorReflection = iirFilterCeilingFloor[channel].process(outputBlock[5].getSample(channel,sample)*reflections.junctionMicStereoGain(5, channel)/fmax(reflections.getDist(5),0.4));
-            } else {
-                 frontReflection = outputBlock[0].getSample(channel,sample)*reflections.junctionMicStereoGain(0, channel)/fmax(reflections.getDist(0),0.4);
-                
-                 backReflection = outputBlock[1].getSample(channel,sample)*reflections.junctionMicStereoGain(1, channel)/fmax(reflections.getDist(1),0.4);
-                
-                 rightReflection = outputBlock[2].getSample(channel,sample)*reflections.junctionMicStereoGain(2, channel)/fmax(reflections.getDist(2),0.4);
-                
-                 leftReflection = outputBlock[3].getSample(channel,sample)*reflections.junctionMicStereoGain(3, channel)/fmax(reflections.getDist(3),0.4);
-                
-                 ceilingReflection = outputBlock[4].getSample(channel,sample)*reflections.junctionMicStereoGain(4, channel)/fmax(reflections.getDist(4),0.4);
-                
-                 floorReflection = outputBlock[5].getSample(channel,  sample)*reflections.junctionMicStereoGain(5, channel)/fmax(reflections.getDist(5),0.4);
             }
-           */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    juce::ScopedTryLock tryLock(mLoadingLock);
+    
+    if (tryLock.isLocked())
+    {
+        for (int channel = 0; channel < 1; ++channel)
+        {
+            float* channelData = buffer.getWritePointer (channel);
+            mConvolutionManager[channel].processInput(channelData);
+            const float* y = mConvolutionManager[channel].getOutputBuffer();
+            memcpy(channelData, y, buffer.getNumSamples() * sizeof(float));
             
-            
-       
-            float out = directSound + frontReflection + backReflection + rightReflection + leftReflection + ceilingReflection + floorReflection;
-                        
-            buffer.setSample(channel, sample, out);
+            if (buffer.getNumChannels() == 2)
+            {
+                float *channelDataR = buffer.getWritePointer(1);
+                const float* y = mConvolutionManager[0].getOutputBuffer();
+                memcpy(channelDataR, y, buffer.getNumSamples() * sizeof(float));
+            }
         }
     }
+    else
+    {
+        buffer.clear();
+    }
+    
+    
 }
 
 
@@ -330,16 +407,25 @@ juce::AudioProcessorEditor* EarlyReflectionsAudioProcessor::createEditor()
 //==============================================================================
 void EarlyReflectionsAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+// CONVO
+    XmlElement xml("STATEINFO");
+    xml.setAttribute("impulseResponseFilePath", mImpulseResponseFilePath);
+    copyXmlToBinary(xml, destData);
+
 }
 
 void EarlyReflectionsAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
-}
+    std::unique_ptr<XmlElement> xml(getXmlFromBinary(data, sizeInBytes));
+
+    String impulseResponseFilePath = xml->getStringAttribute("impulseResponseFilePath", "");
+    juce::File ir(impulseResponseFilePath);
+    AudioFormatManager manager;
+    manager.registerBasicFormats();
+    juce::ScopedPointer<AudioFormatReader> formatReader = manager.createReaderFor(ir);
+    AudioSampleBuffer sampleBuffer(formatReader->numChannels, formatReader->lengthInSamples);
+    formatReader->read(&sampleBuffer, 0, formatReader->lengthInSamples, 0, 1, 1);
+    setImpulseResponse(sampleBuffer, impulseResponseFilePath);}
 
 //==============================================================================
 // This creates new instances of the plugin..
@@ -436,13 +522,33 @@ void EarlyReflectionsAudioProcessor::parameterChanged(const String &parameterID,
         updateSourceCartesianCoordinates();
     }
     
-    if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xAllPassButton))){
-        if (newValue == 1){
-            apfOnOff = true;
-        } else {
-            apfOnOff = false;
+  
+    
+    
+    
+    if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xmButtonChooseIR))){
+        if (newValue == 0){
+            FileChooser fchooser("Select Impulse Response");
+            if (fchooser.browseForFileToOpen())
+            {
+                File ir = fchooser.getResult();
+                FileInputStream irInputStream(ir);
+                AudioFormatManager manager;
+                manager.registerBasicFormats();
+                juce::ScopedPointer<AudioFormatReader> formatReader = manager.createReaderFor(ir);
+                AudioSampleBuffer sampleBuffer(formatReader->numChannels, formatReader->lengthInSamples);
+                formatReader->read(&sampleBuffer, 0, formatReader->lengthInSamples, 0, 1, 1);
+                
+                this->setImpulseResponse(sampleBuffer, ir.getFullPathName());
+                
         }
+        
     }
+    }
+    
+    
+    
+    
     
     if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xDirectSoundButton))){
         if (newValue == 1){
@@ -513,12 +619,13 @@ void EarlyReflectionsAudioProcessor::parameterChanged(const String &parameterID,
     //DBG(parameterID + ": " + String(newValue, 2));
 }
 
+
+
 void EarlyReflectionsAudioProcessor::valueChanged(Value& sourceValue)
 {
 
     
-/*
-    
+    /*
     if (sourceValue.refersToSameSourceAs(micX) || sourceValue.refersToSameSourceAs(micY))
     {
         updateMicPolarCoordinates();
@@ -539,6 +646,11 @@ void EarlyReflectionsAudioProcessor::valueChanged(Value& sourceValue)
         updateSourceCartesianCoordinates();
     }
     
-  */
+*/
 
 }
+  
+
+
+
+

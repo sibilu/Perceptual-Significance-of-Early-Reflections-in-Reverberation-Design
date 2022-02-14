@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="EHGq9T" name="SimonsEarlyReflections" projectType="audioplug"
-              useAppConfig="0" displaySplashScreen="1" jucerFormatVersion="1">
+              useAppConfig="0" displaySplashScreen="1" jucerFormatVersion="1"
+              defines="JUCE_MODAL_LOOPS_PERMITTED=1 " pluginFormats="buildAU,buildVST3">
   <MAINGROUP id="p6LYGW" name="SimonsEarlyReflections">
     <FILE id="OZoTiO" name="am_std_libs.h" compile="0" resource="0" file="Source/am_std_libs.h"/>
     <GROUP id="{D1E98113-EFA7-9A47-4FB5-757A6B041F0C}" name="Source">
+      <GROUP id="{9A4CC415-DCF3-96D3-0BFB-1D0C14CA58FE}" name="Convolution">
+        <GROUP id="{E0FD14DD-669A-C1BF-1119-B7F23AF535B2}" name="util">
+          <FILE id="b1ftAB" name="fft.hpp" compile="0" resource="0" file="Source/Convolution/util/fft.hpp"/>
+          <FILE id="O1hDNV" name="SincFilter.hpp" compile="0" resource="0" file="Source/Convolution/util/SincFilter.hpp"/>
+          <FILE id="rRVkRm" name="util.cpp" compile="1" resource="0" file="Source/Convolution/util/util.cpp"/>
+          <FILE id="eHzBKK" name="util.h" compile="0" resource="0" file="Source/Convolution/util/util.h"/>
+        </GROUP>
+        <FILE id="cKwhwb" name="ConvolutionManager.h" compile="0" resource="0"
+              file="Source/Convolution/ConvolutionManager.h"/>
+        <FILE id="cf6tOh" name="RefCountedAudioBuffer.h" compile="0" resource="0"
+              file="Source/Convolution/RefCountedAudioBuffer.h"/>
+        <FILE id="VgUXaS" name="TimeDistributedFFTConvolver.h" compile="0"
+              resource="0" file="Source/Convolution/TimeDistributedFFTConvolver.h"/>
+        <FILE id="v8s2rM" name="TimeDistributedFFTConvolver.hpp" compile="0"
+              resource="0" file="Source/Convolution/TimeDistributedFFTConvolver.hpp"/>
+        <FILE id="oRN78a" name="UniformPartitionConvolver.h" compile="0" resource="0"
+              file="Source/Convolution/UniformPartitionConvolver.h"/>
+        <FILE id="a5uYHy" name="UniformPartitionConvolver.hpp" compile="0"
+              resource="0" file="Source/Convolution/UniformPartitionConvolver.hpp"/>
+      </GROUP>
       <FILE id="xxpxbB" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="jHiC9r" name="PluginProcessor.h" compile="0" resource="0"

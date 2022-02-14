@@ -16,6 +16,10 @@
 #include "Parameters.h"
 #include "RandomAPF.h"
 
+
+#include "Convolution/UniformPartitionConvolver.h"
+#include "Convolution/TimeDistributedFFTConvolver.h"
+#include "Convolution/ConvolutionManager.h"
 //==============================================================================
 /**
  */
@@ -62,7 +66,9 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    
+    // CONVOLUTION
+    void setImpulseResponse(const AudioSampleBuffer& impulseResponseBuffer, const juce::String pathToImpulse = "") ;
+    // -------------------------------------
     int materialFrontBack = 1;
     int materialRightLeft= 1;
     int materialCeilingFloor = 1;
@@ -109,7 +115,7 @@ public:
     void updateSourceCartesianCoordinates();
 
 private:
-    void valueChanged(Value& sourceValue) override;
+   void valueChanged(Value& sourceValue) override;
     std::unique_ptr<AudioProcessorValueTreeState>  pluginState = nullptr;
     Reflections reflections;
     Absorption absorption;
@@ -143,6 +149,15 @@ private:
     
     float floorReflection;
      
+    
+    
+    
+    // CONVOLUTION
+    ConvolutionManager<float> mConvolutionManager[2];
+    juce::CriticalSection mLoadingLock;
+    float mSampleRate;
+    int mBufferSize;
+    juce::String mImpulseResponseFilePath;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EarlyReflectionsAudioProcessor)
 };

@@ -2,6 +2,12 @@
 
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="SimonsEarlyReflections\Source\Convolution\util">
+      <UniqueIdentifier>{3CF0232D-20D4-CFA3-8B2E-77AFF1BEE2C2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SimonsEarlyReflections\Source\Convolution">
+      <UniqueIdentifier>{F2B5C141-BFE2-1AAC-6D67-028E0713F5AD}</UniqueIdentifier>
+    </Filter>
     <Filter Include="SimonsEarlyReflections\Source">
       <UniqueIdentifier>{21B3185B-2D35-4215-7519-7385A65657CD}</UniqueIdentifier>
     </Filter>
@@ -469,6 +475,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Convolution\util\util.cpp">
+      <Filter>SimonsEarlyReflections\Source\Convolution\util</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClCompile>
@@ -2708,6 +2717,33 @@
   <ItemGroup>
     <ClInclude Include="..\..\Source\am_std_libs.h">
       <Filter>SimonsEarlyReflections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Convolution\util\fft.hpp">
+      <Filter>SimonsEarlyReflections\Source\Convolution\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Convolution\util\SincFilter.hpp">
+      <Filter>SimonsEarlyReflections\Source\Convolution\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Convolution\util\util.h">
+      <Filter>SimonsEarlyReflections\Source\Convolution\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Convolution\ConvolutionManager.h">
+      <Filter>SimonsEarlyReflections\Source\Convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Convolution\RefCountedAudioBuffer.h">
+      <Filter>SimonsEarlyReflections\Source\Convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Convolution\TimeDistributedFFTConvolver.h">
+      <Filter>SimonsEarlyReflections\Source\Convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Convolution\TimeDistributedFFTConvolver.hpp">
+      <Filter>SimonsEarlyReflections\Source\Convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Convolution\UniformPartitionConvolver.h">
+      <Filter>SimonsEarlyReflections\Source\Convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Convolution\UniformPartitionConvolver.hpp">
+      <Filter>SimonsEarlyReflections\Source\Convolution</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginProcessor.h">
       <Filter>SimonsEarlyReflections\Source</Filter>

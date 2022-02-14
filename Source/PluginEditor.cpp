@@ -46,8 +46,9 @@ allPassButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier
 
 directSoundButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(ParameterIDIndex::xDirectSoundButton), directSoundButton),
 
-filtersButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(ParameterIDIndex::xFiltersButton), filtersButton)
+filtersButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(ParameterIDIndex::xFiltersButton), filtersButton),
 
+mButtonChooseIRButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(ParameterIDIndex::xmButtonChooseIR), mButtonChooseIR)
 
 {
     // Make sure that before the constructor has finished, you've set the
@@ -400,6 +401,11 @@ filtersButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier
     filtersButton.setColour(TextButton::textColourOffId, juce::Colours::white);
     addAndMakeVisible (filtersButton);
     
+    mButtonChooseIR.setButtonText ("Select IR");
+    mButtonChooseIR.setBounds(500, 240, 50, 30);
+    mButtonChooseIR.setClickingTogglesState (true);
+    mButtonChooseIR.setColour(TextButton::buttonColourId, juce::Colours::grey);
+    addAndMakeVisible (mButtonChooseIR);
     
     audioProcessor.addChangeListener(this);
     
@@ -412,6 +418,7 @@ EarlyReflectionsAudioProcessorEditor::~EarlyReflectionsAudioProcessorEditor()
     
     audioProcessor.removeChangeListener(this);
 }
+
 
 //==============================================================================
 void EarlyReflectionsAudioProcessorEditor::paint (juce::Graphics& g)
