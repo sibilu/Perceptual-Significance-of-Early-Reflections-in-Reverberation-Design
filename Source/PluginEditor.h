@@ -110,7 +110,10 @@ private:
     // CONVOLUTION
     TextButton mButtonChooseIR;
     AudioProcessorValueTreeState::ButtonAttachment mButtonChooseIRButtonAttachment;
+    
 
+    TextButton convolutionButton;
+    AudioProcessorValueTreeState::ButtonAttachment convolutionButtonAttachment;
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

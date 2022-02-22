@@ -48,7 +48,11 @@ directSoundButtonAttachment(*audioProcessor.getPluginState(), getParameterIdenti
 
 filtersButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(ParameterIDIndex::xFiltersButton), filtersButton),
 
-mButtonChooseIRButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(ParameterIDIndex::xmButtonChooseIR), mButtonChooseIR)
+mButtonChooseIRButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(ParameterIDIndex::xmButtonChooseIR), mButtonChooseIR),
+
+
+convolutionButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(ParameterIDIndex::xConvolutionOnOff), convolutionButton)
+
 
 {
     // Make sure that before the constructor has finished, you've set the
@@ -406,6 +410,12 @@ mButtonChooseIRButtonAttachment(*audioProcessor.getPluginState(), getParameterId
     mButtonChooseIR.setClickingTogglesState (true);
     mButtonChooseIR.setColour(TextButton::buttonColourId, juce::Colours::grey);
     addAndMakeVisible (mButtonChooseIR);
+    
+    convolutionButton.setButtonText ("Tail");
+    convolutionButton.setBounds(560, 240, 50, 30);
+    convolutionButton.setClickingTogglesState (true);
+    convolutionButton.setColour(TextButton::buttonColourId, juce::Colours::grey);
+    addAndMakeVisible (convolutionButton);
     
     audioProcessor.addChangeListener(this);
     

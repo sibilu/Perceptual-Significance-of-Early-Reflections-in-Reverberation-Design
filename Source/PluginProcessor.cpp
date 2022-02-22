@@ -15,13 +15,19 @@
 EarlyReflectionsAudioProcessor::EarlyReflectionsAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
 : AudioProcessor (BusesProperties()
+
+                  
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
                   .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
 #endif
                   .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
 #endif
-                  )//  ,lowPassFilter(dsp::IIR::Coefficients<float>::makeLowPass(44100, 400, 0.1f)),  highPassFilter(dsp::IIR::Coefficients<float>::makeHighPass(44100, 2000, 0.1f))
+                  ),
+// WAVEFORM
+thumbnailCache (5),                            // [4]
+thumbnail (512, formatManager, thumbnailCache) // [5]
+//  ,lowPassFilter(dsp::IIR::Coefficients<float>::makeLowPass(44100, 400, 0.1f)),  highPassFilter(dsp::IIR::Coefficients<float>::makeHighPass(44100, 2000, 0.1f))
 #endif
 {
     pluginState.reset(new AudioProcessorValueTreeState(*this,nullptr,"EarlyReflection",getParameterLayout()));
@@ -62,7 +68,9 @@ EarlyReflectionsAudioProcessor::EarlyReflectionsAudioProcessor()
 
     
     
-    
+    // WAVEFORM
+ //   thumbnail.addChangeListener (this);            // [6]
+
 }
 
 EarlyReflectionsAudioProcessor::~EarlyReflectionsAudioProcessor()
@@ -148,6 +156,7 @@ void EarlyReflectionsAudioProcessor::changeProgramName (int index, const juce::S
 {
 }
 
+
 void EarlyReflectionsAudioProcessor::setImpulseResponse(const AudioSampleBuffer& impulseResponseBuffer, const juce::String pathToImpulse)
 {
     juce::ScopedLock lock(mLoadingLock);
@@ -193,15 +202,15 @@ void EarlyReflectionsAudioProcessor::prepareToPlay (double sampleRate, int sampl
     reflections.prepare(spec);
     absorption.prepareFilter(spec);
     
-    
+
     reflections.setSampleRate(sampleRate);
     
-     
-    
+    predelayLine.reset();
+    predelayLine.prepare(spec);
     
     
     allPassOrder = 47;
-    dump = 0.4 ;
+    dump = 0.4;
     
     randomAPFFrontBack.generateRandAllPassFilterCoeffs(bFrontBack, aFrontBack, allPassOrder, dump, time(0));
     randomAPFRightLeft.generateRandAllPassFilterCoeffs(bRightLeft, aRightLeft, allPassOrder, dump, time(0)+10);
@@ -261,6 +270,7 @@ bool EarlyReflectionsAudioProcessor::isBusesLayoutSupported (const BusesLayout& 
 
 void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+    
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
@@ -288,8 +298,7 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
     reflections.processBlock(inputBlock,outputBlock[0], outputBlock[1], outputBlock[2], outputBlock[3], outputBlock[4], outputBlock[5]);
     
 
-    
-    
+
     for (int channel = 0; channel < totalNumInputChannels; ++channel){
             for (int sample = 0 ; sample < buffer.getNumSamples(); ++sample){
                 
@@ -301,8 +310,6 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
                 } else {
                     directSound = 0.f;
                 }
-                
-             
             
                 
                 frontReflection = outputBlock[0].getSample(channel,sample)*reflections.junctionMicStereoGain(0, channel)/fmax(reflections.getDist(0),0.4);
@@ -345,33 +352,47 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
                 }
                */
                 
-                
+
            
                 
                 float out = directSound + frontReflection + backReflection + rightReflection + leftReflection + ceilingReflection + floorReflection;
                             
                 buffer.setSample(channel, sample, out);
+                
+                
+                
+// BAD WAY MAYBE, NOT WORKING CURRENTLY
+
+                    auto* data = buffer.getWritePointer(channel);
+                
+
+                
+                
+                
+                
+                
             }
             }
     
     
     
     
+   // auto preConvBlock = dsp::AudioBlock<float>(buffer);
+
+  //  predelay.processBlock(preConvBlock,preConvOutBlock);
     
     
+
+
     
-    
-    
-    
-    
-        
+    if (convOnOff){
     juce::ScopedTryLock tryLock(mLoadingLock);
     
     if (tryLock.isLocked())
     {
         for (int channel = 0; channel < 1; ++channel)
         {
-            float* channelData = buffer.getWritePointer (channel);
+            float*    channelData = buffer.getWritePointer (channel);
             mConvolutionManager[channel].processInput(channelData);
             const float* y = mConvolutionManager[channel].getOutputBuffer();
             memcpy(channelData, y, buffer.getNumSamples() * sizeof(float));
@@ -389,7 +410,7 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
         buffer.clear();
     }
     
-    
+    }
 }
 
 
@@ -601,6 +622,15 @@ void EarlyReflectionsAudioProcessor::parameterChanged(const String &parameterID,
         micYLim = ((double)micY.getValue());
     }
     
+    
+    if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xConvolutionOnOff))){
+        if (newValue == 1){
+            convOnOff = true;
+        } else {
+            convOnOff = false;
+        }
+    }
+    
     DBG("Source X");
     DBG((double)sourceX.getValue());
     DBG(sourceXLim);
@@ -650,6 +680,8 @@ void EarlyReflectionsAudioProcessor::valueChanged(Value& sourceValue)
 
 }
   
+
+
 
 
 

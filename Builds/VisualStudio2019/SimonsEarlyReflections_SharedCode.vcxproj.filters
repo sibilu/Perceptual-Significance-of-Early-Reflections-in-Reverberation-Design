@@ -487,6 +487,9 @@
     <ClCompile Include="..\..\Source\Junction.cpp">
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Predelay.cpp">
+      <Filter>SimonsEarlyReflections\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\RandomAPF.cpp">
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClCompile>
@@ -2755,6 +2758,9 @@
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Junction.h">
+      <Filter>SimonsEarlyReflections\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Predelay.h">
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\RandomAPF.h">

@@ -35,6 +35,8 @@
       <FILE id="YpqMpu" name="Position.cpp" compile="1" resource="0" file="Source/Position.cpp"/>
       <FILE id="TfiZXa" name="Junction.h" compile="0" resource="0" file="Source/Junction.h"/>
       <FILE id="LH5aY4" name="Junction.cpp" compile="1" resource="0" file="Source/Junction.cpp"/>
+      <FILE id="TBC0AA" name="Predelay.h" compile="0" resource="0" file="Source/Predelay.h"/>
+      <FILE id="ddbL42" name="Predelay.cpp" compile="1" resource="0" file="Source/Predelay.cpp"/>
       <FILE id="qbvNYj" name="RandomAPF.cpp" compile="1" resource="0" file="Source/RandomAPF.cpp"/>
       <FILE id="yH4Szg" name="RandomAPF.h" compile="0" resource="0" file="Source/RandomAPF.h"/>
       <FILE id="eR8fz6" name="Reflections.cpp" compile="1" resource="0" file="Source/Reflections.cpp"/>

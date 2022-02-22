@@ -143,6 +143,7 @@
     <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\Source\Position.cpp"/>
     <ClCompile Include="..\..\Source\Junction.cpp"/>
+    <ClCompile Include="..\..\Source\Predelay.cpp"/>
     <ClCompile Include="..\..\Source\RandomAPF.cpp"/>
     <ClCompile Include="..\..\Source\Reflections.cpp"/>
     <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
@@ -2222,6 +2223,7 @@
     <ClInclude Include="..\..\Source\Parameters.h"/>
     <ClInclude Include="..\..\Source\Position.h"/>
     <ClInclude Include="..\..\Source\Junction.h"/>
+    <ClInclude Include="..\..\Source\Predelay.h"/>
     <ClInclude Include="..\..\Source\RandomAPF.h"/>
     <ClInclude Include="..\..\Source\Reflections.h"/>
     <ClInclude Include="..\..\Source\PluginEditor.h"/>

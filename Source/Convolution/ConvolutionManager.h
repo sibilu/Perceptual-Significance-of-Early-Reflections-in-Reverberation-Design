@@ -108,6 +108,8 @@ public:
         init(ir, numSamples);
     }
     
+   
+    
 private:
     int mBufferSize;
     juce::ScopedPointer<UPConvolver<FLOAT_TYPE> > mUniformConvolver;

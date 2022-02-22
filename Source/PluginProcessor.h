@@ -17,6 +17,7 @@
 #include "RandomAPF.h"
 
 
+
 #include "Convolution/UniformPartitionConvolver.h"
 #include "Convolution/TimeDistributedFFTConvolver.h"
 #include "Convolution/ConvolutionManager.h"
@@ -66,6 +67,7 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+
     // CONVOLUTION
     void setImpulseResponse(const AudioSampleBuffer& impulseResponseBuffer, const juce::String pathToImpulse = "") ;
     // -------------------------------------
@@ -113,15 +115,16 @@ public:
     void updateMicCartesianCoordinates();
     void updateSourcePolarCoordinates();
     void updateSourceCartesianCoordinates();
-
+    
+    
 private:
    void valueChanged(Value& sourceValue) override;
     std::unique_ptr<AudioProcessorValueTreeState>  pluginState = nullptr;
     Reflections reflections;
     Absorption absorption;
-
     bool apfOnOff = true;
     bool directSoundOnOff = true;
+    bool convOnOff = true;
     // RANDOM ALLPASS
     RandomAPF randomAPFFrontBack; RandomAPF randomAPFRightLeft; RandomAPF randomAPFCeilingFloor;
     am_IIRFilter iirFilterFrontBack[2]; am_IIRFilter iirFilterRightLeft[2]; am_IIRFilter iirFilterCeilingFloor[2];
@@ -134,6 +137,9 @@ private:
     
     AudioBuffer<float> outBuffer[6];
     dsp::AudioBlock<float> outputBlock[6];
+    dsp::DelayLine<float,dsp::DelayLineInterpolationTypes::Linear> predelayLine {100000};
+
+    float* channelData;
     
     float directSound;
     
@@ -150,7 +156,9 @@ private:
     float floorReflection;
      
     
-    
+    // WAVEFORM
+    AudioBuffer<float> mWaveForm;
+
     
     // CONVOLUTION
     ConvolutionManager<float> mConvolutionManager[2];
@@ -158,6 +166,14 @@ private:
     float mSampleRate;
     int mBufferSize;
     juce::String mImpulseResponseFilePath;
+    
+    
+    juce::AudioFormatManager formatManager;                    // [3]
+    std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
+    juce::AudioTransportSource transportSource;
+    juce::AudioThumbnailCache thumbnailCache;                  // [1]
+    juce::AudioThumbnail thumbnail;                            // [2]
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EarlyReflectionsAudioProcessor)
 };

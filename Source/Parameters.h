@@ -23,8 +23,9 @@ static StringArray ParameterID {
     "allPassButton",
     "directSoundButton",
     "filtersButton",
-    "mButtonChooseIR"
-    
+    "mButtonChooseIR",
+    "convolutionOnOff"
+
 };
 
 enum ParameterIDIndex {
@@ -47,7 +48,8 @@ enum ParameterIDIndex {
     xAllPassButton,
     xDirectSoundButton,
     xFiltersButton,
-    xmButtonChooseIR
+    xmButtonChooseIR,
+    xConvolutionOnOff
 };
 
 static String getParameterIdentifier(ParameterIDIndex paramIndex){return ParameterID.getReference(paramIndex);}
@@ -320,6 +322,17 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
     
     parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xmButtonChooseIR),
                                                 "Select IR",
+                                                "",
+                                                {0.f, 1.f,1.f},
+                                                1, //default value should be calculated based on value of the other slider
+                                                [](float value) -> String{return String(value,1);}
+                                                , [](String s) -> float {return s.getFloatValue();},
+    false, true, true, AudioProcessorParameter::Category::genericParameter,true)));
+    
+    
+    
+    parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xConvolutionOnOff),
+                                                "Tail on/off",
                                                 "",
                                                 {0.f, 1.f,1.f},
                                                 1, //default value should be calculated based on value of the other slider

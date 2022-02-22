@@ -28,6 +28,7 @@
 		12F50987AABD9241E3CEA909 /* Position.cpp */ = {isa = PBXBuildFile; fileRef = 16BAE2707BA760682DF8F3F1; };
 		15605CECBDFAA9F9F3C6FB67 /* RecentFilesMenuTemplate.nib */ = {isa = PBXBuildFile; fileRef = 6E6DBE17926E754471AD0641; };
 		17BF1EFB6806C176B0C6B735 /* am_IIRFilter.cpp */ = {isa = PBXBuildFile; fileRef = 84AC1EC0FD3B87B11E69DAAC; };
+		1A34AFE6D04C61EF042154C6 /* Predelay.cpp */ = {isa = PBXBuildFile; fileRef = 3076C459F243D848017510CB; };
 		1D1660F6E81E0232BB76C460 /* VST3 */ = {isa = PBXBuildFile; fileRef = 3FA5DFA4B2A86BFB15342691; };
 		1D60B9C871D2CB1FB6B43BF0 /* include_juce_dsp.mm */ = {isa = PBXBuildFile; fileRef = F32000868BBDE9FE6067FEBE; };
 		282DC8AD09D7F60B6C9FB9EF /* Foundation.framework */ = {isa = PBXBuildFile; fileRef = 131EF1DD81A1A03644564354; };
@@ -80,6 +81,7 @@
 		16BAE2707BA760682DF8F3F1 /* Position.cpp */ /* Position.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Position.cpp; path = ../../Source/Position.cpp; sourceTree = SOURCE_ROOT; };
 		20225691A596C3ED2692B90A /* Shared Code */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNewProject.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2381886C6DD42A67B36F047E /* juce_core */ /* juce_core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_core; path = ../../../../../../../Applications/JUCE/modules/juce_core; sourceTree = SOURCE_ROOT; };
+		3076C459F243D848017510CB /* Predelay.cpp */ /* Predelay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Predelay.cpp; path = ../../Source/Predelay.cpp; sourceTree = SOURCE_ROOT; };
 		32DA5EF843C7B9C32DD7DB7B /* include_juce_audio_utils.mm */ /* include_juce_audio_utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_utils.mm; path = ../../JuceLibraryCode/include_juce_audio_utils.mm; sourceTree = SOURCE_ROOT; };
 		33B810377F548DE8C8F62CAA /* include_juce_gui_basics.mm */ /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_basics.mm; path = ../../JuceLibraryCode/include_juce_gui_basics.mm; sourceTree = SOURCE_ROOT; };
 		33F128C7E52F23D8728AFE2A /* juce_gui_extra */ /* juce_gui_extra */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_extra; path = ../../../../../../../Applications/JUCE/modules/juce_gui_extra; sourceTree = SOURCE_ROOT; };
@@ -102,6 +104,7 @@
 		6DCBEF4644B754CB22D6F7D0 /* util.cpp */ /* util.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = util.cpp; path = ../../Source/Convolution/util/util.cpp; sourceTree = SOURCE_ROOT; };
 		6E39B475E90E2536C07E5A49 /* include_juce_gui_extra.mm */ /* include_juce_gui_extra.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_extra.mm; path = ../../JuceLibraryCode/include_juce_gui_extra.mm; sourceTree = SOURCE_ROOT; };
 		6E6DBE17926E754471AD0641 /* RecentFilesMenuTemplate.nib */ /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.nib; name = RecentFilesMenuTemplate.nib; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
+		6E99ED1B181338F1FC835A3F /* Predelay.h */ /* Predelay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Predelay.h; path = ../../Source/Predelay.h; sourceTree = SOURCE_ROOT; };
 		707FF3273A4F907E52A6AE1C /* Reflections.h */ /* Reflections.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Reflections.h; path = ../../Source/Reflections.h; sourceTree = SOURCE_ROOT; };
 		70F263D3ACC5FDAB58312528 /* UniformPartitionConvolver.hpp */ /* UniformPartitionConvolver.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UniformPartitionConvolver.hpp; path = ../../Source/Convolution/UniformPartitionConvolver.hpp; sourceTree = SOURCE_ROOT; };
 		744314BB6D399130B604FA5E /* fft.hpp */ /* fft.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = fft.hpp; path = ../../Source/Convolution/util/fft.hpp; sourceTree = SOURCE_ROOT; };
@@ -296,6 +299,8 @@
 				16BAE2707BA760682DF8F3F1,
 				99B3BD0062226B0C291FB06E,
 				CF775F799A587174093A7B05,
+				6E99ED1B181338F1FC835A3F,
+				3076C459F243D848017510CB,
 				4CACF3CEB44C06778870976B,
 				0F39F8F7CE76C1388EE6987C,
 				D24847D410D27AD14424B021,
@@ -566,6 +571,7 @@
 				93DBA72FC1398602A7B04D8C,
 				12F50987AABD9241E3CEA909,
 				6E78A31C21B1D6067107038E,
+				1A34AFE6D04C61EF042154C6,
 				6EDB64A1F130D7781498ED03,
 				0682DE871FA918211E76399F,
 				905BB4097A34A58CC58A494F,
