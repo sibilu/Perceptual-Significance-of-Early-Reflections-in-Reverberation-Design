@@ -231,6 +231,9 @@ void EarlyReflectionsAudioProcessor::prepareToPlay (double sampleRate, int sampl
     
     updateMicCartesianCoordinates();
     updateSourceCartesianCoordinates();
+    
+    scratchBuffer.setSize (getNumInputChannels(), samplesPerBlock);
+
 }
 
 void EarlyReflectionsAudioProcessor::releaseResources()
@@ -300,82 +303,79 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
 
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel){
-            for (int sample = 0 ; sample < buffer.getNumSamples(); ++sample){
-                
-                reflections.setPositions(sourceXLim,sourceYLim,micXLim,micYLim);
-                
+        
+        AudioSampleBuffer tmpBuffer (scratchBuffer.getArrayOfWritePointers(), buffer.getNumChannels(), buffer.getNumSamples());
+        tmpBuffer.copyFrom(channel, 0, buffer, channel, 0, buffer.getNumSamples());
+   
+        float*    channelData = buffer.getWritePointer (channel);
+        float*    channelDataTemp = tmpBuffer.getWritePointer (channel);
+        
+        
+        
+        
+        juce::ScopedTryLock tryLock(mLoadingLock);
+        
+        if (tryLock.isLocked())
+        {
+        mConvolutionManager[channel].processInput(channelData);
+        const float* y = mConvolutionManager[channel].getOutputBuffer();
+        memcpy(channelDataTemp, y, buffer.getNumSamples() * sizeof(float));
+        } else{
+            buffer.clear();
+        }
+        
+        for (int sample = 0 ; sample < buffer.getNumSamples(); ++sample){
+            auto input = channelDataTemp[sample]; //—1
+            auto dry = channelData[sample]; //—1
 
-                if(directSoundOnOff){
-                 directSound = inputBlock.getSample(channel,sample)*reflections.sourceMicStereoGain(channel);
-                } else {
-                    directSound = 0.f;
-                }
+            reflections.setPositions(sourceXLim,sourceYLim,micXLim,micYLim);
+                          
+
+                          if(directSoundOnOff){
+                           directSound = inputBlock.getSample(channel,sample)*reflections.sourceMicStereoGain(channel);
+                          } else {
+                              directSound = 0.f;
+                          }
+                      
+                          
+                          frontReflection = outputBlock[0].getSample(channel,sample)*reflections.junctionMicStereoGain(0, channel)/fmax(reflections.getDist(0),0.4);
+                         
+                          backReflection = outputBlock[1].getSample(channel,sample)*reflections.junctionMicStereoGain(1, channel)/fmax(reflections.getDist(1),0.4);
+                         
+                          rightReflection = outputBlock[2].getSample(channel,sample)*reflections.junctionMicStereoGain(2, channel)/fmax(reflections.getDist(2),0.4);
+                         
+                          leftReflection = outputBlock[3].getSample(channel,sample)*reflections.junctionMicStereoGain(3, channel)/fmax(reflections.getDist(3),0.4);
+                         
+                          ceilingReflection = outputBlock[4].getSample(channel,sample)*reflections.junctionMicStereoGain(4, channel)/fmax(reflections.getDist(4),0.4);
+                         
+                          floorReflection = outputBlock[5].getSample(channel,  sample)*reflections.junctionMicStereoGain(5, channel)/fmax(reflections.getDist(5),0.4);
+                          
             
-                
-                frontReflection = outputBlock[0].getSample(channel,sample)*reflections.junctionMicStereoGain(0, channel)/fmax(reflections.getDist(0),0.4);
-               
-                backReflection = outputBlock[1].getSample(channel,sample)*reflections.junctionMicStereoGain(1, channel)/fmax(reflections.getDist(1),0.4);
-               
-                rightReflection = outputBlock[2].getSample(channel,sample)*reflections.junctionMicStereoGain(2, channel)/fmax(reflections.getDist(2),0.4);
-               
-                leftReflection = outputBlock[3].getSample(channel,sample)*reflections.junctionMicStereoGain(3, channel)/fmax(reflections.getDist(3),0.4);
-               
-                ceilingReflection = outputBlock[4].getSample(channel,sample)*reflections.junctionMicStereoGain(4, channel)/fmax(reflections.getDist(4),0.4);
-               
-                floorReflection = outputBlock[5].getSample(channel,  sample)*reflections.junctionMicStereoGain(5, channel)/fmax(reflections.getDist(5),0.4);
-                
-                /*
-                if(apfOnOff){
-                     frontReflection = iirFilterFrontBack[channel].process(outputBlock[0].getSample(channel,sample)*reflections.junctionMicStereoGain(0, channel)/fmax(reflections.getDist(0),0.4));
-                    
-                     backReflection = iirFilterFrontBack[channel].process(outputBlock[1].getSample(channel,sample)*reflections.junctionMicStereoGain(1, channel)/fmax(reflections.getDist(1),0.4));
-                    
-                     rightReflection = iirFilterRightLeft[channel].process(outputBlock[2].getSample(channel,sample)*reflections.junctionMicStereoGain(2, channel)/fmax(reflections.getDist(2),0.4));
-                    
-                     leftReflection = iirFilterRightLeft[channel].process(outputBlock[3].getSample(channel,sample)*reflections.junctionMicStereoGain(3, channel)/fmax(reflections.getDist(3),0.4));
-                    
-                     ceilingReflection = iirFilterCeilingFloor[channel].process(outputBlock[4].getSample(channel,sample)*reflections.junctionMicStereoGain(4, channel)/fmax(reflections.getDist(4),0.4));
-                    
-                     floorReflection = iirFilterCeilingFloor[channel].process(outputBlock[5].getSample(channel,sample)*reflections.junctionMicStereoGain(5, channel)/fmax(reflections.getDist(5),0.4));
-                } else {
-                     frontReflection = outputBlock[0].getSample(channel,sample)*reflections.junctionMicStereoGain(0, channel)/fmax(reflections.getDist(0),0.4);
-                    
-                     backReflection = outputBlock[1].getSample(channel,sample)*reflections.junctionMicStereoGain(1, channel)/fmax(reflections.getDist(1),0.4);
-                    
-                     rightReflection = outputBlock[2].getSample(channel,sample)*reflections.junctionMicStereoGain(2, channel)/fmax(reflections.getDist(2),0.4);
-                    
-                     leftReflection = outputBlock[3].getSample(channel,sample)*reflections.junctionMicStereoGain(3, channel)/fmax(reflections.getDist(3),0.4);
-                    
-                     ceilingReflection = outputBlock[4].getSample(channel,sample)*reflections.junctionMicStereoGain(4, channel)/fmax(reflections.getDist(4),0.4);
-                    
-                     floorReflection = outputBlock[5].getSample(channel,  sample)*reflections.junctionMicStereoGain(5, channel)/fmax(reflections.getDist(5),0.4);
-                }
-               */
-                
-
+            //DELAY HERE
+            predelayLine.pushSample(channel, input);
+            input = predelayLine.popSample(channel, reflections.largestDelay());
+           // DBG(reflections.largestDelay());
+            float out = directSound + frontReflection + backReflection + rightReflection + leftReflection + ceilingReflection + floorReflection;
            
-                
-                float out = directSound + frontReflection + backReflection + rightReflection + leftReflection + ceilingReflection + floorReflection;
-                            
-                buffer.setSample(channel, sample, out);
-                
-                
-                
-// BAD WAY MAYBE, NOT WORKING CURRENTLY
+            
+            
+            if (convOnOff){
+                 outConv = input*reflections.invDistLaw(channel);
 
-                    auto* data = buffer.getWritePointer(channel);
+            } else {
                 
+                outConv = 0.f;
 
-                
-                
-                
-                
+            }
+
+            float combined = out + outConv;
+            buffer.setSample(channel, sample, combined);
                 
             }
-            }
+    }
     
     
-    
+     
     
    // auto preConvBlock = dsp::AudioBlock<float>(buffer);
 
@@ -383,8 +383,7 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
     
     
 
-
-    
+    /*
     if (convOnOff){
     juce::ScopedTryLock tryLock(mLoadingLock);
     
@@ -392,7 +391,8 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
     {
         for (int channel = 0; channel < 1; ++channel)
         {
-            float*    channelData = buffer.getWritePointer (channel);
+            float*    channelData = tmpBuffer.getWritePointer (channel);
+            
             mConvolutionManager[channel].processInput(channelData);
             const float* y = mConvolutionManager[channel].getOutputBuffer();
             memcpy(channelData, y, buffer.getNumSamples() * sizeof(float));
@@ -411,6 +411,7 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
     }
     
     }
+     */
 }
 
 
@@ -456,9 +457,9 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter(){
 
 
 void EarlyReflectionsAudioProcessor::updateMicPolarCoordinates(){
-    double mMic = (double)micX.getValue() - 0.5*(double)roomX.getValue();
-    micPolDist.setValue(sqrt(pow(mMic, 2) + pow((double)micY.getValue(), 2)));
-    micPolAng.setValue(std::atan(mMic / (double)micY.getValue()));
+ //   double mMic = (double)micX.getValue() - 0.5*(double)roomX.getValue();
+   // micPolDist.setValue(sqrt(pow(mMic, 2) + pow((double)micY.getValue(), 2)));
+   // micPolAng.setValue(std::atan(mMic / (double)micY.getValue()));
 }
 
 void EarlyReflectionsAudioProcessor::updateMicCartesianCoordinates(){
@@ -498,8 +499,8 @@ void EarlyReflectionsAudioProcessor::parameterChanged(const String &parameterID,
     
     if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xRoomX))){
         roomX = newValue;
-        updateSourceCartesianCoordinates();
-        updateMicCartesianCoordinates();
+        //updateSourceCartesianCoordinates();
+       // updateMicCartesianCoordinates();
 
     }
     

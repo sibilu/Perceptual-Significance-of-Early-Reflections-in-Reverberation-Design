@@ -104,6 +104,14 @@ float Reflections::junctionMicStereoGain(int junctionIndex, int channel){
 }
 
 
+float Reflections::invDistLaw(int channel){
+
+
+    float distAtt = 1/fmax(listenerPos.distanceTo(sourcePos),0.4);
+    return distAtt;
+}
+
+
 float Reflections::sourceMicStereoGain(int channel){
 
     // reference: Pulkki, V. (1997) Virtual Sound Source Positioning Using Vector Base Amplitude Panning AES
@@ -181,7 +189,30 @@ void Reflections:: update(int materialFrontBack, int materialRightLeft, int mate
     wallLeftDelay.setDelay(jmax(firstReflectionTimes[3] - micToSourceDelay, 0.0f));
     wallCeilingDelay.setDelay(jmax(firstReflectionTimes[4] - micToSourceDelay, 0.0f));
     wallFloorDelay.setDelay(jmax(firstReflectionTimes[5] - micToSourceDelay, 0.0f));
-    
+   // DBG(firstReflectionTimes[0]);
+}
+
+
+float Reflections::largestDelay()
+{
+    int i;
+    int n = sizeof(firstReflectionTimes) / sizeof(firstReflectionTimes[0]);
+
+     
+    // Initialize maximum element
+    float max = firstReflectionTimes[0];
+ 
+    // Traverse array elements
+    // from second and compare
+    // every element with current max
+    for (i = 1; i < n; i++)
+        if (firstReflectionTimes[i] > max)
+            max = firstReflectionTimes[i];
+ 
+
+    return max;
+
+
 }
 
 void Reflections::setPositions(float sourceX, float sourceY, float micX, float micY){

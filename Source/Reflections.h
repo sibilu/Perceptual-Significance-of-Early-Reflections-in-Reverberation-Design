@@ -27,7 +27,7 @@ public:
     void prepare(dsp::ProcessSpec spec);
     float junctionMicStereoGain(int junctionIndex, int channel);
     float sourceMicStereoGain(int channel);
-
+    float invDistLaw(int channel);
     float getDist(int junctionIndex);
     
     float getWallDelay(int wallIndex);
@@ -37,6 +37,8 @@ public:
     float micToSourceDelay;
     bool filtersOnOff = true;
 
+    float largestDelay();
+     
 private:
     Position sourcePos;
     Position listenerPos;

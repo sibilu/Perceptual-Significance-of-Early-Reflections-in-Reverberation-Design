@@ -139,7 +139,6 @@ private:
     dsp::AudioBlock<float> outputBlock[6];
     dsp::DelayLine<float,dsp::DelayLineInterpolationTypes::Linear> predelayLine {100000};
 
-    float* channelData;
     
     float directSound;
     
@@ -155,6 +154,8 @@ private:
     
     float floorReflection;
      
+    
+    float outConv;
     
     // WAVEFORM
     AudioBuffer<float> mWaveForm;
@@ -174,6 +175,8 @@ private:
     juce::AudioThumbnailCache thumbnailCache;                  // [1]
     juce::AudioThumbnail thumbnail;                            // [2]
 
+    
+    AudioSampleBuffer scratchBuffer;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EarlyReflectionsAudioProcessor)
 };
