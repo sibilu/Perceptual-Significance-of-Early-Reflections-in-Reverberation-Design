@@ -14,7 +14,7 @@
 #include "Reflections.h"
 #include "Absorption.h"
 #include "Parameters.h"
-#include "RandomAPF.h"
+#include "Allpass.h"
 
 
 
@@ -90,44 +90,50 @@ public:
     
     
     
-    Value sourcePolDist{ 20.f };
-    Value sourcePolAng{0.f};
+    Value sourcePolDist{};
+    Value sourcePolAng{};
     
-    Value micPolDist{5.f};
-    Value micPolAng{0.f};
+    Value micPolDist{};
+    Value micPolAng{};
 
     float micXLim = 0.5 * (double)roomX.getValue() + (double)micPolDist.getValue() * std::sin((double)micPolAng.getValue());
     float micYLim = (double)micPolDist.getValue() * std::cos((double)micPolAng.getValue());
 
-    Value micX{ micXLim };
-    Value micY{ micYLim };
+    Value micX{};
+    Value micY{ };
 
     // ==================
 
     float sourceXLim = 0.5 * (double)roomX.getValue() + (double)sourcePolDist.getValue() * std::sin((double)sourcePolAng.getValue());
     float sourceYLim = (double)sourcePolDist.getValue() * std::cos((double)sourcePolAng.getValue());
 
-    Value sourceX{ sourceXLim };
-    Value sourceY{ sourceYLim };
+    Value sourceX{ };
+    Value sourceY{ };
 
     AudioProcessorValueTreeState* getPluginState() {return pluginState.get();}
     void updateMicPolarCoordinates();
     void updateMicCartesianCoordinates();
     void updateSourcePolarCoordinates();
     void updateSourceCartesianCoordinates();
+
+    void getEarlyReflections(int channel, int sample);
     
-    
+ 
 private:
    void valueChanged(Value& sourceValue) override;
     std::unique_ptr<AudioProcessorValueTreeState>  pluginState = nullptr;
     Reflections reflections;
     Absorption absorption;
-    bool apfOnOff = true;
+  
     bool directSoundOnOff = true;
+    bool erOnOff = true;
+    bool tailOnOff = true;
+    
+    
+    bool apfOnOff = true;
     bool convOnOff = true;
+    
     // RANDOM ALLPASS
-    RandomAPF randomAPFFrontBack; RandomAPF randomAPFRightLeft; RandomAPF randomAPFCeilingFloor;
-    am_IIRFilter iirFilterFrontBack[2]; am_IIRFilter iirFilterRightLeft[2]; am_IIRFilter iirFilterCeilingFloor[2];
 
     int allPassOrder;
     double dump;
@@ -141,6 +147,10 @@ private:
 
     
     float directSound;
+    float convolutedSignal;
+    float directAndER;
+    float directAndERAndTail;
+    
     
     float frontReflection;
     
@@ -161,6 +171,16 @@ private:
     AudioBuffer<float> mWaveForm;
 
     
+    
+
+    // APF
+    Allpass allPass1;
+    Allpass allPass2;
+    Allpass allPass3;
+    Allpass allPass4;
+    Allpass allPass5;
+    Allpass allPass6;
+
     // CONVOLUTION
     ConvolutionManager<float> mConvolutionManager[2];
     juce::CriticalSection mLoadingLock;

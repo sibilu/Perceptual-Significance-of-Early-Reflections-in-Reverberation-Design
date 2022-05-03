@@ -22,10 +22,12 @@ public:
 
     //==============================================================================
     void paint (juce::Graphics&) override;
+
     void resized() override;
     void changeListenerCallback(ChangeBroadcaster* source) override;
 
 private:
+    
     void updateSliderColours();
     Label sourceCoordinateLabel;
     Label micCoordinateLabel;
@@ -114,6 +116,14 @@ private:
 
     TextButton convolutionButton;
     AudioProcessorValueTreeState::ButtonAttachment convolutionButtonAttachment;
+    
+    // ER
+    TextButton earlyReflectionsButton;
+    AudioProcessorValueTreeState::ButtonAttachment earlyReflectionsButtonAttachment;
+    
+
+    TextButton tailButton;
+    AudioProcessorValueTreeState::ButtonAttachment tailButtonAttachment;
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

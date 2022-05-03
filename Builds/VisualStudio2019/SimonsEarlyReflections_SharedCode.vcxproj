@@ -141,10 +141,10 @@
   <ItemGroup>
     <ClCompile Include="..\..\Source\Convolution\util\util.cpp"/>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
+    <ClCompile Include="..\..\Source\Allpass.cpp"/>
     <ClCompile Include="..\..\Source\Position.cpp"/>
     <ClCompile Include="..\..\Source\Junction.cpp"/>
     <ClCompile Include="..\..\Source\Predelay.cpp"/>
-    <ClCompile Include="..\..\Source\RandomAPF.cpp"/>
     <ClCompile Include="..\..\Source\Reflections.cpp"/>
     <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
     <ClCompile Include="..\..\Source\Absorption.cpp"/>
@@ -2192,6 +2192,7 @@
     <ClCompile Include="..\..\..\..\swam\JUCE\modules\juce_gui_extra\juce_gui_extra.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_basics.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_devices.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_formats.cpp"/>
@@ -2219,12 +2220,12 @@
     <ClInclude Include="..\..\Source\Convolution\TimeDistributedFFTConvolver.hpp"/>
     <ClInclude Include="..\..\Source\Convolution\UniformPartitionConvolver.h"/>
     <ClInclude Include="..\..\Source\Convolution\UniformPartitionConvolver.hpp"/>
+    <ClInclude Include="..\..\Source\Allpass.h"/>
     <ClInclude Include="..\..\Source\PluginProcessor.h"/>
     <ClInclude Include="..\..\Source\Parameters.h"/>
     <ClInclude Include="..\..\Source\Position.h"/>
     <ClInclude Include="..\..\Source\Junction.h"/>
     <ClInclude Include="..\..\Source\Predelay.h"/>
-    <ClInclude Include="..\..\Source\RandomAPF.h"/>
     <ClInclude Include="..\..\Source\Reflections.h"/>
     <ClInclude Include="..\..\Source\PluginEditor.h"/>
     <ClInclude Include="..\..\Source\Absorption.h"/>
@@ -3072,10 +3073,17 @@
     <ClInclude Include="..\..\..\..\swam\JUCE\modules\juce_gui_extra\misc\juce_WebBrowserComponent.h"/>
     <ClInclude Include="..\..\..\..\swam\JUCE\modules\juce_gui_extra\native\juce_mac_CarbonViewWrapperComponent.h"/>
     <ClInclude Include="..\..\..\..\..\..\..\Applications\JUCE\modules\juce_gui_extra\juce_gui_extra.h"/>
+    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\JucePluginDefines.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\..\Dropbox\SMC\graphicsERTool\tailonly.png"/>
+    <None Include="..\..\..\..\..\Dropbox\SMC\graphicsERTool\erapf.png"/>
+    <None Include="..\..\..\..\..\Dropbox\SMC\graphicsERTool\direct.png"/>
+    <None Include="..\..\..\..\..\Dropbox\SMC\graphicsERTool\erfilter.png"/>
+    <None Include="..\..\..\..\..\Dropbox\SMC\graphicsERTool\er.png"/>
+    <None Include="..\..\..\..\..\Dropbox\SMC\graphicsERTool\erapffiltersoft.png"/>
     <None Include="..\..\..\..\swam\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt"/>
     <None Include="..\..\..\..\swam\JUCE\modules\juce_audio_devices\native\oboe\README.md"/>
     <None Include="..\..\..\..\swam\JUCE\modules\juce_audio_formats\codecs\flac\Flac Licence.txt"/>

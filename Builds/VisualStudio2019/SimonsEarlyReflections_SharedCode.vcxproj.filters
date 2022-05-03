@@ -481,6 +481,9 @@
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Allpass.cpp">
+      <Filter>SimonsEarlyReflections\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Position.cpp">
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClCompile>
@@ -488,9 +491,6 @@
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Predelay.cpp">
-      <Filter>SimonsEarlyReflections\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\RandomAPF.cpp">
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Reflections.cpp">
@@ -2677,6 +2677,9 @@
     <ClCompile Include="..\..\..\..\swam\JUCE\modules\juce_gui_extra\juce_gui_extra.mm">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_basics.cpp">
       <Filter>JUCE Library Code</Filter>
     </ClCompile>
@@ -2748,6 +2751,9 @@
     <ClInclude Include="..\..\Source\Convolution\UniformPartitionConvolver.hpp">
       <Filter>SimonsEarlyReflections\Source\Convolution</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Allpass.h">
+      <Filter>SimonsEarlyReflections\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\PluginProcessor.h">
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClInclude>
@@ -2761,9 +2767,6 @@
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Predelay.h">
-      <Filter>SimonsEarlyReflections\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\RandomAPF.h">
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Reflections.h">
@@ -5307,6 +5310,9 @@
     <ClInclude Include="..\..\..\..\..\..\..\Applications\JUCE\modules\juce_gui_extra\juce_gui_extra.h">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
+      <Filter>JUCE Library Code</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>JUCE Library Code</Filter>
     </ClInclude>
@@ -5315,6 +5321,24 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\..\Dropbox\SMC\graphicsERTool\tailonly.png">
+      <Filter>SimonsEarlyReflections</Filter>
+    </None>
+    <None Include="..\..\..\..\..\Dropbox\SMC\graphicsERTool\erapf.png">
+      <Filter>SimonsEarlyReflections</Filter>
+    </None>
+    <None Include="..\..\..\..\..\Dropbox\SMC\graphicsERTool\direct.png">
+      <Filter>SimonsEarlyReflections</Filter>
+    </None>
+    <None Include="..\..\..\..\..\Dropbox\SMC\graphicsERTool\erfilter.png">
+      <Filter>SimonsEarlyReflections</Filter>
+    </None>
+    <None Include="..\..\..\..\..\Dropbox\SMC\graphicsERTool\er.png">
+      <Filter>SimonsEarlyReflections</Filter>
+    </None>
+    <None Include="..\..\..\..\..\Dropbox\SMC\graphicsERTool\erapffiltersoft.png">
+      <Filter>SimonsEarlyReflections</Filter>
+    </None>
     <None Include="..\..\..\..\swam\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt">
       <Filter>JUCE Modules\juce_audio_devices\native\oboe</Filter>
     </None>

@@ -11,14 +11,16 @@ Absorption::Absorption() {}
 void Absorption::prepareFilter(dsp::ProcessSpec spec){
     filter.prepare(spec);
     filter.reset();
-}
-
-
-void Absorption::getOutputBlock(){
     
 }
 
+
+
+
 void Absorption::updateFilter(int material) {
+    
+    
+    
     switch (material) {
         case 1:{
             dsp::IIR::Coefficients<float>::Ptr coeffs (new dsp::IIR::Coefficients<float>(   0.36506,-0.98224,0.91615,-0.29506,1,-2.7729,2.6578,-0.87931));// Carpet coefficients
@@ -77,7 +79,6 @@ void Absorption::processBlock(dsp::AudioBlock<float> & inputBlock) {
     
     filter.process(dsp::ProcessContextReplacing<float> (inputBlock));
     
-   
 }
 
 

@@ -24,7 +24,9 @@ static StringArray ParameterID {
     "directSoundButton",
     "filtersButton",
     "mButtonChooseIR",
-    "convolutionOnOff"
+    "convolutionOnOff",
+    "earlyReflectionsButton",
+    "tailButton"
 
 };
 
@@ -49,7 +51,9 @@ enum ParameterIDIndex {
     xDirectSoundButton,
     xFiltersButton,
     xmButtonChooseIR,
-    xConvolutionOnOff
+    xConvolutionOnOff,
+    xEarlyReflectionsButton,
+    xTailButton
 };
 
 static String getParameterIdentifier(ParameterIDIndex paramIndex){return ParameterID.getReference(paramIndex);}
@@ -129,8 +133,8 @@ false, true, true, AudioProcessorParameter::Category::genericParameter,false)));
     parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xRoomX),
                                                 "Room x",
                                                 "m",
-                                                {0.3f, 50.f, 0.01f},
-                                                35.f,
+                                                {0.3f, 20.f, 0.01f},
+                                                8.f,
                                                 [](float value) -> String{
     
         return String(value,0);
@@ -143,8 +147,8 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
     parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xRoomY),
                                                 "Room y",
                                                 "",
-                                                {0.3f, 50.f, 0.01f},
-                                                25.f,
+                                                {0.3f, 20.f, 0.01f},
+                                                8.f,
                                                 [](float value) -> String{
     
         return String(value,2);
@@ -156,8 +160,8 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
     parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xRoomZ),
                                                 "Room z",
                                                 "",
-                                                {0.3f, 50.f, 0.01f},
-                                                15.f,
+                                                {0.3f, 15.f, 0.01f},
+                                                4.f,
                                                 [](float value) -> String{
         return String(value,2);
         
@@ -171,8 +175,8 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
     parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xMicX),
                                                 "Mic x",
                                                 "",
-                                                {0.01f, 50.f, 0.01f},
-                                                15.f,
+                                                {0.01f, 20.f, 0.01f},
+                                                2.f,
                                                 [](float value) -> String{
         return String(value,2);
         
@@ -186,8 +190,8 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
     parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xMicY),
                                                 "Mic y",
                                                 "",
-                                                {0.01f, 50.f, 0.01f},
-                                                5.f,
+                                                {0.01f, 20.f, 0.01f},
+                                                4.f,
                                                 [](float value) -> String{
         return String(value,2);
         
@@ -201,8 +205,8 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
     parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xSourceX),
                                                 "Source x",
                                                 "",
-                                                {0.01f, 50.f, 0.01f},
-                                                15.f,
+                                                {0.01f, 20.f, 0.01f},
+                                                7.f,
                                                 [](float value) -> String{
         return String(value,2);
         
@@ -216,8 +220,8 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
     parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xSourceY),
                                                 "Source y",
                                                 "",
-                                                {0.01f, 50.f, 0.01f},
-                                                15.f,
+                                                {0.01f, 20.f, 0.01f},
+                                                5.f,
                                                 [](float value) -> String{
         return String(value,2);
         
@@ -333,6 +337,26 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
     
     parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xConvolutionOnOff),
                                                 "Tail on/off",
+                                                "",
+                                                {0.f, 1.f,1.f},
+                                                1, //default value should be calculated based on value of the other slider
+                                                [](float value) -> String{return String(value,1);}
+                                                , [](String s) -> float {return s.getFloatValue();},
+    false, true, true, AudioProcessorParameter::Category::genericParameter,true)));
+    
+
+    parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xEarlyReflectionsButton),
+                                                "ER",
+                                                "",
+                                                {0.f, 1.f,1.f},
+                                                1, //default value should be calculated based on value of the other slider
+                                                [](float value) -> String{return String(value,1);}
+                                                , [](String s) -> float {return s.getFloatValue();},
+    false, true, true, AudioProcessorParameter::Category::genericParameter,true)));
+    
+    
+    parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xTailButton),
+                                                "Tail",
                                                 "",
                                                 {0.f, 1.f,1.f},
                                                 1, //default value should be calculated based on value of the other slider

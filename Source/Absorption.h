@@ -14,7 +14,6 @@ class Absorption
     
     void processBlock(dsp::AudioBlock<float> & inputBlock);
 	
-    void getOutputBlock();
     void prepareFilter(dsp::ProcessSpec spec);
 	
     void updateFilter(int material);

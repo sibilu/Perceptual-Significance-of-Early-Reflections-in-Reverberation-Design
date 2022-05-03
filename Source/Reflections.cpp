@@ -180,8 +180,6 @@ void Reflections:: update(int materialFrontBack, int materialRightLeft, int mate
     
      micToSourceDelay = listenerPos.distanceTo(sourcePos)/speedOfSound*Fs;
     
-    //micSourceDelay.setDelay(micToSourceDelay);
-    
     
     wallFrontDelay.setDelay(jmax(firstReflectionTimes[0] - micToSourceDelay, 0.0f));
     wallBackDelay.setDelay(jmax(firstReflectionTimes[1]-micToSourceDelay, 0.0f));

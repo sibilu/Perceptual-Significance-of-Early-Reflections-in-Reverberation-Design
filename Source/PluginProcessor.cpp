@@ -15,7 +15,7 @@
 EarlyReflectionsAudioProcessor::EarlyReflectionsAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
 : AudioProcessor (BusesProperties()
-
+                  
                   
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
@@ -49,8 +49,8 @@ thumbnail (512, formatManager, thumbnailCache) // [5]
     roomX.referTo(pluginState->getParameterAsValue(getParameterIdentifier(ParameterIDIndex::xRoomX)));
     roomY.referTo(pluginState->getParameterAsValue(getParameterIdentifier(ParameterIDIndex::xRoomY)));
     roomZ.referTo(pluginState->getParameterAsValue(getParameterIdentifier(ParameterIDIndex::xRoomZ)));
-
-
+    
+    
     
     micX.addListener(this);
     micY.addListener(this);
@@ -65,12 +65,12 @@ thumbnail (512, formatManager, thumbnailCache) // [5]
     roomX.addListener(this);
     roomY.addListener(this);
     roomZ.addListener(this);
-
+    
     
     
     // WAVEFORM
- //   thumbnail.addChangeListener (this);            // [6]
-
+    //   thumbnail.addChangeListener (this);            // [6]
+    
 }
 
 EarlyReflectionsAudioProcessor::~EarlyReflectionsAudioProcessor()
@@ -190,7 +190,7 @@ void EarlyReflectionsAudioProcessor::prepareToPlay (double sampleRate, int sampl
     // CONV
     mConvolutionManager[0].setBufferSize(samplesPerBlock);
     mConvolutionManager[1].setBufferSize(samplesPerBlock);
-
+    
     
     //FILTER
     
@@ -202,38 +202,29 @@ void EarlyReflectionsAudioProcessor::prepareToPlay (double sampleRate, int sampl
     reflections.prepare(spec);
     absorption.prepareFilter(spec);
     
-
     reflections.setSampleRate(sampleRate);
     
     predelayLine.reset();
     predelayLine.prepare(spec);
     
-    
-    allPassOrder = 47;
-    dump = 0.4;
-    
-    randomAPFFrontBack.generateRandAllPassFilterCoeffs(bFrontBack, aFrontBack, allPassOrder, dump, time(0));
-    randomAPFRightLeft.generateRandAllPassFilterCoeffs(bRightLeft, aRightLeft, allPassOrder, dump, time(0)+10);
-    randomAPFCeilingFloor.generateRandAllPassFilterCoeffs(bCeilingFloor, aCeilingFloor, allPassOrder, dump, time(0)+20);
-
-   
-    DBG(time(0));
-
-    iirFilterFrontBack[0].setCoeff(bFrontBack, allPassOrder, aFrontBack, allPassOrder);
-    iirFilterFrontBack[1].setCoeff(bFrontBack, allPassOrder, aFrontBack, allPassOrder);
-    
-    iirFilterRightLeft[0].setCoeff(bRightLeft, allPassOrder, aRightLeft, allPassOrder);
-    iirFilterRightLeft[1].setCoeff(bRightLeft, allPassOrder, aRightLeft, allPassOrder);
-    
-    iirFilterCeilingFloor[0].setCoeff(bCeilingFloor, allPassOrder, aCeilingFloor, allPassOrder);
-    iirFilterCeilingFloor[1].setCoeff(bCeilingFloor, allPassOrder, aCeilingFloor, allPassOrder);
-    
+    allPass1.setSampleRate(sampleRate);
+    allPass1.prepareFilter(spec);
+    allPass2.setSampleRate(sampleRate);
+    allPass2.prepareFilter(spec);
+    allPass3.setSampleRate(sampleRate);
+    allPass3.prepareFilter(spec);
+    allPass4.setSampleRate(sampleRate);
+    allPass4.prepareFilter(spec);
+    allPass5.setSampleRate(sampleRate);
+    allPass5.prepareFilter(spec);
+    allPass6.setSampleRate(sampleRate);
+    allPass6.prepareFilter(spec);
     
     updateMicCartesianCoordinates();
     updateSourceCartesianCoordinates();
     
     scratchBuffer.setSize (getNumInputChannels(), samplesPerBlock);
-
+    
 }
 
 void EarlyReflectionsAudioProcessor::releaseResources()
@@ -278,10 +269,11 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     int faces = 6;
+    
     for(int i = 0; i<faces; i++){
-    outBuffer[i]= AudioBuffer<float>(buffer.getNumChannels(), buffer.getNumSamples());
+        outBuffer[i]= AudioBuffer<float>(buffer.getNumChannels(), buffer.getNumSamples());
     }
-
+    
     
     // TO DO - FOR CPU? IF ROOMX IS NOT EQUAL TO SLIDER THEN DO THIS
     reflections.setSpeedOfSound(temp);
@@ -293,6 +285,7 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
     
     auto inputBlock = dsp::AudioBlock<float>(buffer);
     
+  
     for(int i = 0; i<faces; i++){
         outputBlock[i] = dsp::AudioBlock<float>(outBuffer[i]);
     }
@@ -300,118 +293,121 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
     reflections.update(materialFrontBack, materialRightLeft, materialCeilingFloor);
     reflections.processBlock(inputBlock,outputBlock[0], outputBlock[1], outputBlock[2], outputBlock[3], outputBlock[4], outputBlock[5]);
     
+    allPass1.updateFilter();
+    allPass2.updateFilter();
+    allPass3.updateFilter();
+    allPass4.updateFilter();
+    allPass5.updateFilter();
+    allPass6.updateFilter();
 
+    // apf on/off button
+    if (apfOnOff){
+        allPass1.processBlock(outputBlock[0]);
+        allPass2.processBlock(outputBlock[1]);
+        allPass3.processBlock(outputBlock[2]);
+        allPass4.processBlock(outputBlock[3]);
+        allPass5.processBlock(outputBlock[4]);
+        allPass6.processBlock(outputBlock[5]);
 
+    } else {
+        
+    }
+    
+    
     for (int channel = 0; channel < totalNumInputChannels; ++channel){
         
+        // create extra audio buffer
         AudioSampleBuffer tmpBuffer (scratchBuffer.getArrayOfWritePointers(), buffer.getNumChannels(), buffer.getNumSamples());
+        
+        // fill buffer with tmpbuffer with data from the main buffer
         tmpBuffer.copyFrom(channel, 0, buffer, channel, 0, buffer.getNumSamples());
-   
+        
+        // create float pointer?? with the channel data from the main buffer
         float*    channelData = buffer.getWritePointer (channel);
-        float*    channelDataTemp = tmpBuffer.getWritePointer (channel);
+        // and with the tmp buffer (should be identical as float* channelData then
+         float*    channelDataTemp = tmpBuffer.getWritePointer (channel);
         
-        
-        
-        
+        // convolution
         juce::ScopedTryLock tryLock(mLoadingLock);
+            
+            if (tryLock.isLocked())
+            {
+                
+                // perform convolution
+                mConvolutionManager[channel].processInput(channelDataTemp);
+                
+                // get output from convolution
+                const float* y = mConvolutionManager[channel].getOutputBuffer();
+                
+                // write to the float pointer??
+                memcpy(channelDataTemp, y, buffer.getNumSamples() * sizeof(float));
+                
+            } else{
+                buffer.clear();
+            }
         
-        if (tryLock.isLocked())
-        {
-        mConvolutionManager[channel].processInput(channelData);
-        const float* y = mConvolutionManager[channel].getOutputBuffer();
-        memcpy(channelDataTemp, y, buffer.getNumSamples() * sizeof(float));
-        } else{
-            buffer.clear();
-        }
-        
+
+
+        // sample-by-sample
         for (int sample = 0 ; sample < buffer.getNumSamples(); ++sample){
-            auto input = channelDataTemp[sample]; //—1
-            auto dry = channelData[sample]; //—1
-
+        
+            // set position of source, mic, and calc junctions
             reflections.setPositions(sourceXLim,sourceYLim,micXLim,micYLim);
-                          
-
-                          if(directSoundOnOff){
-                           directSound = inputBlock.getSample(channel,sample)*reflections.sourceMicStereoGain(channel);
-                          } else {
-                              directSound = 0.f;
-                          }
-                      
-                          
-                          frontReflection = outputBlock[0].getSample(channel,sample)*reflections.junctionMicStereoGain(0, channel)/fmax(reflections.getDist(0),0.4);
-                         
-                          backReflection = outputBlock[1].getSample(channel,sample)*reflections.junctionMicStereoGain(1, channel)/fmax(reflections.getDist(1),0.4);
-                         
-                          rightReflection = outputBlock[2].getSample(channel,sample)*reflections.junctionMicStereoGain(2, channel)/fmax(reflections.getDist(2),0.4);
-                         
-                          leftReflection = outputBlock[3].getSample(channel,sample)*reflections.junctionMicStereoGain(3, channel)/fmax(reflections.getDist(3),0.4);
-                         
-                          ceilingReflection = outputBlock[4].getSample(channel,sample)*reflections.junctionMicStereoGain(4, channel)/fmax(reflections.getDist(4),0.4);
-                         
-                          floorReflection = outputBlock[5].getSample(channel,  sample)*reflections.junctionMicStereoGain(5, channel)/fmax(reflections.getDist(5),0.4);
-                          
             
-            //DELAY HERE
-            predelayLine.pushSample(channel, input);
-            input = predelayLine.popSample(channel, reflections.largestDelay());
-           // DBG(reflections.largestDelay());
-            float out = directSound + frontReflection + backReflection + rightReflection + leftReflection + ceilingReflection + floorReflection;
-           
+            float tailGain = 1-reflections.sourceMicStereoGain(channel);
+            // direct sound on/off button
+            if(directSoundOnOff){
+                directSound = inputBlock.getSample(channel,sample)*reflections.sourceMicStereoGain(channel);
+            } else {
+                directSound = 0.f;
+            }
+            
+          
+            
+            getEarlyReflections(channel, sample);
             
             
-            if (convOnOff){
-                 outConv = input*reflections.invDistLaw(channel);
+          
+            // add direct sound with all 6 reflections
+            if (erOnOff){
+                directAndER =  directSound + frontReflection + backReflection + rightReflection + leftReflection + ceilingReflection + floorReflection;
 
             } else {
-                
-                outConv = 0.f;
+                directAndER =  directSound;
 
             }
-
-            float combined = out + outConv;
-            buffer.setSample(channel, sample, combined);
-                
-            }
-    }
-    
-    
-     
-    
-   // auto preConvBlock = dsp::AudioBlock<float>(buffer);
-
-  //  predelay.processBlock(preConvBlock,preConvOutBlock);
-    
-    
-
-    /*
-    if (convOnOff){
-    juce::ScopedTryLock tryLock(mLoadingLock);
-    
-    if (tryLock.isLocked())
-    {
-        for (int channel = 0; channel < 1; ++channel)
-        {
-            float*    channelData = tmpBuffer.getWritePointer (channel);
             
-            mConvolutionManager[channel].processInput(channelData);
-            const float* y = mConvolutionManager[channel].getOutputBuffer();
-            memcpy(channelData, y, buffer.getNumSamples() * sizeof(float));
             
-            if (buffer.getNumChannels() == 2)
-            {
-                float *channelDataR = buffer.getWritePointer(1);
-                const float* y = mConvolutionManager[0].getOutputBuffer();
-                memcpy(channelDataR, y, buffer.getNumSamples() * sizeof(float));
+            
+          
+                convolutedSignal = tmpBuffer.getSample(channel, sample);
+
+          
+            
+          
+            
+            
+            
+            
+            // delay the channelDataTemp signal
+             predelayLine.pushSample(channel, convolutedSignal);
+             convolutedSignal = predelayLine.popSample(channel, reflections.largestDelay()-reflections.micToSourceDelay);
+            
+            
+            if (tailOnOff){
+                directAndERAndTail = directAndER + tailGain*convolutedSignal;;
+
+            } else {
+                directAndERAndTail = directAndER;
             }
+            // write to the buffer
+            buffer.setSample(channel, sample, directAndERAndTail);
+            
         }
+        
+  
+        
     }
-    else
-    {
-        buffer.clear();
-    }
-    
-    }
-     */
 }
 
 
@@ -429,17 +425,17 @@ juce::AudioProcessorEditor* EarlyReflectionsAudioProcessor::createEditor()
 //==============================================================================
 void EarlyReflectionsAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-// CONVO
+    // CONVO
     XmlElement xml("STATEINFO");
     xml.setAttribute("impulseResponseFilePath", mImpulseResponseFilePath);
     copyXmlToBinary(xml, destData);
-
+    
 }
 
 void EarlyReflectionsAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     std::unique_ptr<XmlElement> xml(getXmlFromBinary(data, sizeInBytes));
-
+    
     String impulseResponseFilePath = xml->getStringAttribute("impulseResponseFilePath", "");
     juce::File ir(impulseResponseFilePath);
     AudioFormatManager manager;
@@ -457,9 +453,9 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter(){
 
 
 void EarlyReflectionsAudioProcessor::updateMicPolarCoordinates(){
- //   double mMic = (double)micX.getValue() - 0.5*(double)roomX.getValue();
-   // micPolDist.setValue(sqrt(pow(mMic, 2) + pow((double)micY.getValue(), 2)));
-   // micPolAng.setValue(std::atan(mMic / (double)micY.getValue()));
+    //   double mMic = (double)micX.getValue() - 0.5*(double)roomX.getValue();
+    // micPolDist.setValue(sqrt(pow(mMic, 2) + pow((double)micY.getValue(), 2)));
+    // micPolAng.setValue(std::atan(mMic / (double)micY.getValue()));
 }
 
 void EarlyReflectionsAudioProcessor::updateMicCartesianCoordinates(){
@@ -479,8 +475,8 @@ void EarlyReflectionsAudioProcessor::updateSourceCartesianCoordinates(){
 }
 
 void EarlyReflectionsAudioProcessor::parameterChanged(const String &parameterID, float newValue){
-
-
+    
+    
     if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xMaterialFrontBack))){
         materialFrontBack = newValue;
     }
@@ -500,8 +496,8 @@ void EarlyReflectionsAudioProcessor::parameterChanged(const String &parameterID,
     if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xRoomX))){
         roomX = newValue;
         //updateSourceCartesianCoordinates();
-       // updateMicCartesianCoordinates();
-
+        // updateMicCartesianCoordinates();
+        
     }
     
     if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xRoomY))){
@@ -544,7 +540,7 @@ void EarlyReflectionsAudioProcessor::parameterChanged(const String &parameterID,
         updateSourceCartesianCoordinates();
     }
     
-  
+    
     
     
     
@@ -563,13 +559,10 @@ void EarlyReflectionsAudioProcessor::parameterChanged(const String &parameterID,
                 
                 this->setImpulseResponse(sampleBuffer, ir.getFullPathName());
                 
+            }
+            
         }
-        
     }
-    }
-    
-    
-    
     
     
     if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xDirectSoundButton))){
@@ -577,6 +570,15 @@ void EarlyReflectionsAudioProcessor::parameterChanged(const String &parameterID,
             directSoundOnOff = true;
         } else {
             directSoundOnOff = false;
+        }
+    }
+    
+    
+    if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xAllPassButton))){
+        if (newValue == 1){
+            apfOnOff = true;
+        } else {
+            apfOnOff = false;
         }
     }
     
@@ -632,55 +634,69 @@ void EarlyReflectionsAudioProcessor::parameterChanged(const String &parameterID,
         }
     }
     
-    DBG("Source X");
-    DBG((double)sourceX.getValue());
-    DBG(sourceXLim);
+    if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xEarlyReflectionsButton))){
+        if (newValue == 1){
+            erOnOff = true;
+        } else {
+            erOnOff = false;
+        }
+    }
     
-    DBG("Source Y");
-    DBG((double)sourceY.getValue());
-    DBG(sourceYLim);
     
-    DBG("Mic X");
-    DBG((double)micX.getValue());
-    DBG(micXLim);
-    
-    DBG("Mic Y");
-    DBG((double)micY.getValue());
-    DBG(micYLim);
-    //DBG(parameterID + ": " + String(newValue, 2));
+    if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xTailButton))){
+        if (newValue == 1){
+            tailOnOff = true;
+        } else {
+            tailOnOff = false;
+        }
+    }
+  
 }
 
-
+void EarlyReflectionsAudioProcessor::getEarlyReflections(int channel, int sample){
+    frontReflection = outputBlock[0].getSample(channel,sample)*reflections.junctionMicStereoGain(0, channel)/fmax(reflections.getDist(0),0.4);
+    
+    backReflection = outputBlock[1].getSample(channel,sample)*reflections.junctionMicStereoGain(1, channel)/fmax(reflections.getDist(1),0.4);
+    
+    rightReflection = outputBlock[2].getSample(channel,sample)*reflections.junctionMicStereoGain(2, channel)/fmax(reflections.getDist(2),0.4);
+    
+    leftReflection = outputBlock[3].getSample(channel,sample)*reflections.junctionMicStereoGain(3, channel)/fmax(reflections.getDist(3),0.4);
+    
+    ceilingReflection = outputBlock[4].getSample(channel,sample)*reflections.junctionMicStereoGain(4, channel)/fmax(reflections.getDist(4),0.4);
+    
+    floorReflection = outputBlock[5].getSample(channel,  sample)*reflections.junctionMicStereoGain(5, channel)/fmax(reflections.getDist(5),0.4);
+    
+}
 
 void EarlyReflectionsAudioProcessor::valueChanged(Value& sourceValue)
 {
-
+    
     
     /*
-    if (sourceValue.refersToSameSourceAs(micX) || sourceValue.refersToSameSourceAs(micY))
-    {
-        updateMicPolarCoordinates();
-    }
+     if (sourceValue.refersToSameSourceAs(micX) || sourceValue.refersToSameSourceAs(micY))
+     {
+     updateMicPolarCoordinates();
+     }
+     
+     if (sourceValue.refersToSameSourceAs(sourceX) || sourceValue.refersToSameSourceAs(sourceY))
+     {
+     updateSourcePolarCoordinates();
+     }
+     
+     if (sourceValue.refersToSameSourceAs(micPolDist) || sourceValue.refersToSameSourceAs(micPolAng))
+     {
+     updateMicCartesianCoordinates();
+     }
+     
+     if (sourceValue.refersToSameSourceAs(sourcePolDist) || sourceValue.refersToSameSourceAs(sourcePolAng))
+     {
+     updateSourceCartesianCoordinates();
+     }
+     
+     */
     
-    if (sourceValue.refersToSameSourceAs(sourceX) || sourceValue.refersToSameSourceAs(sourceY))
-    {
-        updateSourcePolarCoordinates();
-    }
-    
-    if (sourceValue.refersToSameSourceAs(micPolDist) || sourceValue.refersToSameSourceAs(micPolAng))
-    {
-        updateMicCartesianCoordinates();
-    }
-    
-    if (sourceValue.refersToSameSourceAs(sourcePolDist) || sourceValue.refersToSameSourceAs(sourcePolAng))
-    {
-        updateSourceCartesianCoordinates();
-    }
-    
-*/
-
 }
-  
+
 
 
 

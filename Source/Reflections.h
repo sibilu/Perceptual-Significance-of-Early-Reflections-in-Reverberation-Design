@@ -84,8 +84,6 @@ private:
     Absorption wallCeilingAbsorption;
     Absorption wallFloorAbsorption;
 
-  // auto wallFrontBlock = dsp::AudioBlock<float>();
-
     
 
 };
