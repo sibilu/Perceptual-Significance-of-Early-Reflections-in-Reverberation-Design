@@ -477,9 +477,9 @@ void EarlyReflectionsAudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour (juce::Colours::lightblue);
     g.fillRect (185, 223, 410, 110);
     
-    int startPosX = 750;
-    int startPosY = 260;
-    int cubeSize = 7;
+    int startPosX = 763;
+    int startPosY = 300;
+    int cubeSize = 6;
     
     //HORISONTAL FRONT
     int offsetDepth = 0.5*roomYSlider.getValue()*cubeSize;
