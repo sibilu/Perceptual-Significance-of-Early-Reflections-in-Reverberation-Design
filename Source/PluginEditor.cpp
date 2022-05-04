@@ -166,7 +166,8 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     sourceXSlider.setSliderStyle(juce::Slider::LinearHorizontal);
     sourceXSlider.setBounds(275, 100, 100, 100);
     sourceXSlider.setTextBoxStyle(juce::Slider::TextBoxBelow,false,50,30);
-    
+    sourceXSlider.setColour(Slider::thumbColourId, juce::Colours::royalblue);
+
     sourceXSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
     //  sourceXSlider.setRange(0.01, 35.f, 0.01);;
     
@@ -186,6 +187,8 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     sourceYSlider.setSliderStyle(juce::Slider::LinearVertical);
     sourceYSlider.setBounds(210, 30, 100, 100);
     sourceYSlider.setTextBoxStyle(juce::Slider::TextBoxLeft,false,50,30);
+    sourceYSlider.setColour(Slider::thumbColourId, juce::Colours::royalblue);
+
     sourceYSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
     //  sourceYSlider.setRange(0.01, 35.f, 0.01);
     
@@ -247,7 +250,8 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     micXSlider.setSliderStyle(juce::Slider::LinearHorizontal);
     micXSlider.setBounds(465, 100, 100, 100);
     micXSlider.setTextBoxStyle(juce::Slider::TextBoxBelow,false,50,30);
-    
+    micXSlider.setColour(Slider::thumbColourId, juce::Colours::royalblue);
+
     micXSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
     //   micXSlider.setRange(0.01, 35.f, 0.01);;
     //   micXSlider.getValueObject().referTo(audioProcessor.micX);
@@ -267,6 +271,8 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     micYSlider.setSliderStyle(juce::Slider::LinearVertical);
     micYSlider.setBounds(400, 30, 100, 100);
     micYSlider.setTextBoxStyle(juce::Slider::TextBoxLeft,false,50,30);
+    micYSlider.setColour(Slider::thumbColourId, juce::Colours::royalblue);
+
     micYSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
     //  micYSlider.setRange(0.01, 35.f, 0.01);;
     //    micYSlider.getValueObject().referTo(audioProcessor.micY);
@@ -327,7 +333,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     roomXSlider.setSliderStyle(juce::Slider::LinearHorizontal);
     roomXSlider.setBounds(685, 100, 100, 100);
     roomXSlider.setTextBoxStyle(juce::Slider::TextBoxBelow,false,50,30);
-    
+    roomXSlider.setColour(Slider::thumbColourId, juce::Colours::royalblue);
     roomXSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
     //  roomXSlider.setRange(0.01f, 35.f, 0.01f);
     
@@ -348,6 +354,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     roomYSlider.setSliderStyle(juce::Slider::LinearVertical);
     roomYSlider.setBounds(620, 30, 100, 100);
     roomYSlider.setTextBoxStyle(juce::Slider::TextBoxLeft,false,50,30);
+    roomYSlider.setColour(Slider::thumbColourId, juce::Colours::royalblue);
     roomYSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
     //  roomYSlider.setRange(0.01f, 35.f, 0.01f);;
     //    roomYSlider.getValueObject().referTo(audioProcessor.roomY);
@@ -365,6 +372,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     roomZSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     roomZSlider.setBounds(800, 30, 100, 100);
     roomZSlider.setTextBoxStyle(juce::Slider::TextBoxBelow,false,50,30);
+    roomZSlider.setColour(Slider::thumbColourId, juce::Colours::royalblue);
     roomZSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
     // roomZSlider.setRange(0.01f, 35.f, 0.01f);;
     //   roomZSlider.getValueObject().referTo(audioProcessor.roomZ);
@@ -384,7 +392,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     directSoundButton.setButtonText ("Direct");
     directSoundButton.setBounds(185, 335, 128, 30);
     directSoundButton.setClickingTogglesState (true);
-    directSoundButton.setColour(TextButton::buttonOnColourId, juce::Colours::turquoise);
+    directSoundButton.setColour(TextButton::buttonOnColourId, juce::Colours::royalblue);
     directSoundButton.setColour(TextButton::textColourOnId, juce::Colours::black);
     directSoundButton.setColour(TextButton::textColourOffId, juce::Colours::white);
     addAndMakeVisible (directSoundButton);
@@ -394,7 +402,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     earlyReflectionsButton.setButtonText ("ER");
     earlyReflectionsButton.setBounds(326, 335, 128, 30);
     earlyReflectionsButton.setClickingTogglesState (true);
-    earlyReflectionsButton.setColour(TextButton::buttonOnColourId, juce::Colours::turquoise);
+    earlyReflectionsButton.setColour(TextButton::buttonOnColourId, juce::Colours::royalblue);
     earlyReflectionsButton.setColour(TextButton::textColourOnId, juce::Colours::black);
     earlyReflectionsButton.setColour(TextButton::textColourOffId, juce::Colours::white);
     addAndMakeVisible (earlyReflectionsButton);
@@ -403,7 +411,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     tailButton.setButtonText ("Tail");
     tailButton.setBounds(467, 335, 128, 30);
     tailButton.setClickingTogglesState (true);
-    tailButton.setColour(TextButton::buttonOnColourId, juce::Colours::turquoise);
+    tailButton.setColour(TextButton::buttonOnColourId, juce::Colours::royalblue);
     tailButton.setColour(TextButton::textColourOnId, juce::Colours::black);
     tailButton.setColour(TextButton::textColourOffId, juce::Colours::white);
     addAndMakeVisible (tailButton);
@@ -414,19 +422,19 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     
     
     filtersButton.setButtonText ("Absorp.");
-    filtersButton.setBounds(185, 370, 88, 100);
+    filtersButton.setBounds(185, 370, 128, 30);
     filtersButton.setClickingTogglesState (true);
     filtersButton.setColour(TextButton::buttonColourId, juce::Colours::grey);
-    filtersButton.setColour(TextButton::buttonOnColourId, juce::Colours::turquoise);
+    filtersButton.setColour(TextButton::buttonOnColourId, juce::Colours::royalblue);
     filtersButton.setColour(TextButton::textColourOnId, juce::Colours::black);
     filtersButton.setColour(TextButton::textColourOffId, juce::Colours::white);
     addAndMakeVisible (filtersButton);
     
     allPassButton.setButtonText ("APF");
-    allPassButton.setBounds(326, 370, 88, 100);
+    allPassButton.setBounds(326, 370, 128, 30);
     allPassButton.setClickingTogglesState (true);
     allPassButton.setColour(TextButton::buttonColourId, juce::Colours::grey);
-    allPassButton.setColour(TextButton::buttonOnColourId, juce::Colours::turquoise);
+    allPassButton.setColour(TextButton::buttonOnColourId, juce::Colours::royalblue);
     allPassButton.setColour(TextButton::textColourOnId, juce::Colours::black);
     allPassButton.setColour(TextButton::textColourOffId, juce::Colours::white);
     addAndMakeVisible (allPassButton);
@@ -436,7 +444,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     
     
     mButtonChooseIR.setButtonText ("Select IR");
-    mButtonChooseIR.setBounds(467, 370, 88, 100);
+    mButtonChooseIR.setBounds(467, 370, 128, 30);
     mButtonChooseIR.setClickingTogglesState (true);
     mButtonChooseIR.setColour(TextButton::buttonColourId, juce::Colours::grey);
     mButtonChooseIR.setColour(TextButton::buttonOnColourId, juce::Colours::grey);
@@ -457,7 +465,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     
     audioProcessor.addChangeListener(this);
     
-    setSize (910, 400);
+    setSize (910, 410);
 }
 
 
@@ -474,18 +482,22 @@ void EarlyReflectionsAudioProcessorEditor::paint (juce::Graphics& g)
     g.fillAll (Colours::azure);
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
+    g.setColour (juce::Colours::lightgrey);
+    g.fillRect (185, 218, 410, 110);
     g.setColour (juce::Colours::lightblue);
-    g.fillRect (185, 223, 410, 110);
-    
+
     int startPosX = 763;
     int startPosY = 300;
     int cubeSize = 6;
-    
     //HORISONTAL FRONT
     int offsetDepth = 0.5*roomYSlider.getValue()*cubeSize;
-    int offsetWidth = roomXSlider.getValue()*cubeSize;
+    int offsetWidth = 0.5*roomXSlider.getValue()*cubeSize;
     int offsetHeight = 0.5*roomZSlider.getValue()*cubeSize;
-    
+    /*
+    juce::Point<float> point1 (startPosX,startPosY);
+    g.drawEllipse(startPosX-offsetWidth+sourceXSlider.getValue()*cubeSize+sourceYSlider.getValue()*cubeSize*2, startPosY-offsetDepth-sourceYSlider.getValue()*cubeSize, 1, 1, 4);
+
+    */
     
     juce::Line<float> line1 (juce::Point<float> (startPosX-offsetDepth-offsetWidth, startPosY+offsetDepth-offsetHeight),
                              juce::Point<float> (startPosX-offsetDepth+offsetWidth, startPosY+offsetDepth-offsetHeight));
