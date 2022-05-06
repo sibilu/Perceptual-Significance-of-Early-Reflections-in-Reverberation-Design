@@ -220,8 +220,8 @@ void EarlyReflectionsAudioProcessor::prepareToPlay (double sampleRate, int sampl
     allPass6.setSampleRate(sampleRate);
     allPass6.prepareFilter(spec);
     
-    updateMicCartesianCoordinates();
-    updateSourceCartesianCoordinates();
+   // updateMicCartesianCoordinates();
+   // updateSourceCartesianCoordinates();
     
     scratchBuffer.setSize (getNumInputChannels(), samplesPerBlock);
     
@@ -354,7 +354,7 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
             // set position of source, mic, and calc junctions
             reflections.setPositions(sourceXLim,sourceYLim,micXLim,micYLim);
             
-            float tailGain = 1-reflections.sourceMicStereoGain(channel);
+            float tailGain = 1-0.5*(reflections.sourceMicStereoGain(0));
             // direct sound on/off button
             if(directSoundOnOff){
                 directSound = inputBlock.getSample(channel,sample)*reflections.sourceMicStereoGain(channel);
@@ -459,8 +459,8 @@ void EarlyReflectionsAudioProcessor::updateMicPolarCoordinates(){
 }
 
 void EarlyReflectionsAudioProcessor::updateMicCartesianCoordinates(){
-    micX.setValue(0.5 * (double)roomX.getValue() + (double)micPolDist.getValue() * std::sin((double)micPolAng.getValue()));
-    micY.setValue((double)micPolDist.getValue() * std::cos((double)micPolAng.getValue()));
+    //micX.setValue(0.5 * (double)roomX.getValue() + (double)micPolDist.getValue() * std::sin((double)micPolAng.getValue()));
+    //micY.setValue((double)micPolDist.getValue() * std::cos((double)micPolAng.getValue()));
 }
 
 void EarlyReflectionsAudioProcessor::updateSourcePolarCoordinates(){
@@ -470,8 +470,8 @@ void EarlyReflectionsAudioProcessor::updateSourcePolarCoordinates(){
 }
 
 void EarlyReflectionsAudioProcessor::updateSourceCartesianCoordinates(){
-    sourceX.setValue(0.5 * (double)roomX.getValue() + (double)sourcePolDist.getValue() * std::sin((double)sourcePolAng.getValue()));
-    sourceY.setValue((double)sourcePolDist.getValue() * std::cos((double)sourcePolAng.getValue()));
+   // sourceX.setValue(0.5 * (double)roomX.getValue() + (double)sourcePolDist.getValue() * std::sin((double)sourcePolAng.getValue()));
+   // sourceY.setValue((double)sourcePolDist.getValue() * std::cos((double)sourcePolAng.getValue()));
 }
 
 void EarlyReflectionsAudioProcessor::parameterChanged(const String &parameterID, float newValue){
@@ -525,19 +525,19 @@ void EarlyReflectionsAudioProcessor::parameterChanged(const String &parameterID,
     }
     
     if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xMicPolDist))){
-        updateMicCartesianCoordinates();
+       // updateMicCartesianCoordinates();
     }
     
     if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xMicPolAng))){
-        updateMicCartesianCoordinates();
+       // updateMicCartesianCoordinates();
     }
     
     if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xSourcePolDist))){
-        updateSourceCartesianCoordinates();
+       // updateSourceCartesianCoordinates();
     }
     
     if(parameterID.equalsIgnoreCase(getParameterIdentifier(ParameterIDIndex::xSourcePolAng))){
-        updateSourceCartesianCoordinates();
+      //  updateSourceCartesianCoordinates();
     }
     
     
@@ -592,6 +592,7 @@ void EarlyReflectionsAudioProcessor::parameterChanged(const String &parameterID,
     }
     
     sendChangeMessage();
+    
     
     if((double)sourceX.getValue() <= 0.01){
         sourceXLim = 0.01;

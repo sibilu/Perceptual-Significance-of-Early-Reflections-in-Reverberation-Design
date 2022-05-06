@@ -32,6 +32,7 @@ void Allpass::prepareFilter(dsp::ProcessSpec spec){
     apf17.prepare(spec);
     apf18.prepare(spec);
     apf19.prepare(spec);
+   /*
     apf20.prepare(spec);
     apf21.prepare(spec);
     apf22.prepare(spec);
@@ -44,7 +45,7 @@ void Allpass::prepareFilter(dsp::ProcessSpec spec){
     apf29.prepare(spec);
     apf30.prepare(spec);
     apf31.prepare(spec);
-    
+    */
 
     
     apf1.reset();
@@ -66,6 +67,7 @@ void Allpass::prepareFilter(dsp::ProcessSpec spec){
     apf17.reset();
     apf18.reset();
     apf19.reset();
+    /*
     apf20.reset();
     apf21.reset();
     apf22.reset();
@@ -78,7 +80,7 @@ void Allpass::prepareFilter(dsp::ProcessSpec spec){
     apf29.reset();
     apf30.reset();
     apf31.reset();
-
+*/
 
 
 }
@@ -105,6 +107,7 @@ void Allpass::processBlock(dsp::AudioBlock<float> &inputBlock){
     apf17.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf18.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf19.process(dsp::ProcessContextReplacing<float> (inputBlock));
+    /*
     apf20.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf21.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf22.process(dsp::ProcessContextReplacing<float> (inputBlock));
@@ -117,7 +120,7 @@ void Allpass::processBlock(dsp::AudioBlock<float> &inputBlock){
     apf29.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf30.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf31.process(dsp::ProcessContextReplacing<float> (inputBlock));
-
+*/
 }
 
 
@@ -155,6 +158,7 @@ void Allpass::updateFilter(){
     *apf17.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf18.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf19.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
+    /*
     *apf20.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf21.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf22.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
@@ -167,6 +171,6 @@ void Allpass::updateFilter(){
     *apf29.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf30.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf31.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
-   
+   */
 }
 
