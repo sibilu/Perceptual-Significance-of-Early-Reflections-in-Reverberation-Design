@@ -134,7 +134,7 @@ false, true, true, AudioProcessorParameter::Category::genericParameter,false)));
                                                 "Room x",
                                                 "m",
                                                 {0.3f, 15.f, 0.01f},
-                                                8.8f,
+                                                10.f,
                                                 [](float value) -> String{
     
         return String(value,0);
@@ -148,7 +148,7 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
                                                 "Room y",
                                                 "",
                                                 {0.3f, 15.f, 0.01f},
-                                                8.8f,
+                                                10.f,
                                                 [](float value) -> String{
     
         return String(value,2);
@@ -161,7 +161,7 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
                                                 "Room z",
                                                 "",
                                                 {0.3f, 15.f, 0.01f},
-                                                3.4f,
+                                                5.f,
                                                 [](float value) -> String{
         return String(value,2);
         
@@ -325,7 +325,7 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
     
     
     parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xmButtonChooseIR),
-                                                "Select IR",
+                                                "Select room tail",
                                                 "",
                                                 {0.f, 1.f,1.f},
                                                 1, //default value should be calculated based on value of the other slider

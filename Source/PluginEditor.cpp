@@ -389,7 +389,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     
     // FIRST ROW BUTTONS
     
-    directSoundButton.setButtonText ("Direct");
+    directSoundButton.setButtonText ("Direct Sound");
     directSoundButton.setBounds(185, 335, 128, 30);
     directSoundButton.setClickingTogglesState (true);
     directSoundButton.setColour(TextButton::buttonOnColourId, juce::Colours::skyblue);
@@ -399,7 +399,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     
     
     
-    earlyReflectionsButton.setButtonText ("ER");
+    earlyReflectionsButton.setButtonText ("Early Reflections");
     earlyReflectionsButton.setBounds(326, 335, 128, 30);
     earlyReflectionsButton.setClickingTogglesState (true);
     earlyReflectionsButton.setColour(TextButton::buttonOnColourId, juce::Colours::skyblue);
@@ -421,7 +421,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     // SECOND ROW BUTTONS
     
     
-    filtersButton.setButtonText ("Absorp.");
+    filtersButton.setButtonText ("Absorption");
     filtersButton.setBounds(185, 370, 128, 30);
     filtersButton.setClickingTogglesState (true);
     filtersButton.setColour(TextButton::buttonColourId, juce::Colours::grey);
@@ -430,7 +430,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     filtersButton.setColour(TextButton::textColourOffId, juce::Colours::white);
     addAndMakeVisible (filtersButton);
     
-    allPassButton.setButtonText ("APF");
+    allPassButton.setButtonText ("Allpass Filters");
     allPassButton.setBounds(326, 370, 128, 30);
     allPassButton.setClickingTogglesState (true);
     allPassButton.setColour(TextButton::buttonColourId, juce::Colours::grey);
@@ -443,7 +443,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     
     
     
-    mButtonChooseIR.setButtonText ("Select IR");
+    mButtonChooseIR.setButtonText ("Select Tail");
     mButtonChooseIR.setBounds(467, 370, 128, 30);
     mButtonChooseIR.setClickingTogglesState (true);
     mButtonChooseIR.setColour(TextButton::buttonColourId, juce::Colours::grey);
