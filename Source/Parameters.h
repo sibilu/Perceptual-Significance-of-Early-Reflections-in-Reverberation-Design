@@ -131,7 +131,7 @@ false, true, true, AudioProcessorParameter::Category::genericParameter,false)));
     
     
     parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xRoomX),
-                                                "Room x",
+                                                "Room x (width)",
                                                 "m",
                                                 {0.3f, 15.f, 0.01f},
                                                 10.f,
@@ -145,7 +145,7 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
     
     
     parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xRoomY),
-                                                "Room y",
+                                                "Room z (depth)",
                                                 "",
                                                 {0.3f, 15.f, 0.01f},
                                                 10.f,
@@ -158,9 +158,9 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
     
 
     parameters.push_back(std::unique_ptr<AudioProcessorValueTreeState::Parameter>(new AudioProcessorValueTreeState::Parameter(getParameterIdentifier(xRoomZ),
-                                                "Room z",
+                                                "Room y (height)",
                                                 "",
-                                                {0.3f, 15.f, 0.01f},
+                                                {1.1f, 15.f, 0.01f},
                                                 5.f,
                                                 [](float value) -> String{
         return String(value,2);

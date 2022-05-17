@@ -341,7 +341,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     
     addAndMakeVisible(roomXSlider);
     
-    roomXLabel.setText("Room x", dontSendNotification);
+    roomXLabel.setText("Room x (width)", dontSendNotification);
     roomXLabel.setColour (Label::textColourId, juce::Colours::black);
     roomXLabel.attachToComponent(&roomXSlider,true);
     roomXLabel.setJustificationType(Justification::centred);
@@ -360,7 +360,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     //    roomYSlider.getValueObject().referTo(audioProcessor.roomY);
     addAndMakeVisible(roomYSlider);
     
-    roomYLabel.setText("Room y", dontSendNotification);
+    roomYLabel.setText("Room z (depth)", dontSendNotification);
     roomYLabel.setColour (Label::textColourId, juce::Colours::black);
     roomYLabel.attachToComponent(&roomYSlider,false);
     roomYLabel.setJustificationType(Justification::centred);
@@ -378,7 +378,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     //   roomZSlider.getValueObject().referTo(audioProcessor.roomZ);
     addAndMakeVisible(roomZSlider);
     
-    roomZLabel.setText("Room z", dontSendNotification);
+    roomZLabel.setText("Room y (height)", dontSendNotification);
     roomZLabel.setColour (Label::textColourId, juce::Colours::black);
     roomZLabel.attachToComponent(&roomZSlider,false);
     roomZLabel.setJustificationType(Justification::centred);
@@ -695,45 +695,53 @@ void EarlyReflectionsAudioProcessorEditor::changeListenerCallback(ChangeBroadcas
 
 void EarlyReflectionsAudioProcessorEditor::updateSliderColours(){
     
-    if(micXSlider.getValue()>=roomXSlider.getValue()-0.01f || micXSlider.getValue()<=0.01f) {
-        micXSlider.setColour(Slider::backgroundColourId, juce::Colours::orange);
-        roomXSlider.setColour(Slider::backgroundColourId, juce::Colours::orange);
-        roomXSlider.setColour(Slider::trackColourId, juce::Colours::orange);
+    if(micXSlider.getValue()>=roomXSlider.getValue()-0.01f ) {
+        micXSlider.setColour(Slider::backgroundColourId, juce::Colours::red);
+        micXSlider.setColour(Slider::trackColourId, juce::Colours::red);
+        roomXSlider.setColour(Slider::backgroundColourId, juce::Colours::red);
+        roomXSlider.setColour(Slider::trackColourId, juce::Colours::red);
     } else {
+        micXSlider.setColour(Slider::trackColourId, juce::Colours::black);
         micXSlider.setColour(Slider::backgroundColourId, juce::Colours::black);
         roomXSlider.setColour(Slider::backgroundColourId, juce::Colours::black);
         roomXSlider.setColour(Slider::trackColourId, juce::Colours::black);
         
     }
     
-    if (sourceXSlider.getValue()>=roomXSlider.getValue()-0.01f || sourceXSlider.getValue()<=0.01f ) {
-        sourceXSlider.setColour(Slider::backgroundColourId, juce::Colours::orange);
-        roomXSlider.setColour(Slider::backgroundColourId, juce::Colours::orange);
-        roomXSlider.setColour(Slider::trackColourId, juce::Colours::orange);
+    if (sourceXSlider.getValue()>=roomXSlider.getValue()-0.01f ) {
+        sourceXSlider.setColour(Slider::backgroundColourId, juce::Colours::red);
+        sourceXSlider.setColour(Slider::trackColourId, juce::Colours::red);
+        roomXSlider.setColour(Slider::backgroundColourId, juce::Colours::red);
+        roomXSlider.setColour(Slider::trackColourId, juce::Colours::red);
     } else {
         sourceXSlider.setColour(Slider::backgroundColourId, juce::Colours::black);
+        sourceXSlider.setColour(Slider::trackColourId, juce::Colours::black);
         roomXSlider.setColour(Slider::backgroundColourId, juce::Colours::black);
         roomXSlider.setColour(Slider::trackColourId, juce::Colours::black);
     }
     
     
-    if(micYSlider.getValue()>=roomYSlider.getValue()-0.01f || micYSlider.getValue()<=0.01f){
-        micYSlider.setColour(Slider::backgroundColourId, juce::Colours::orange);
-        roomYSlider.setColour(Slider::backgroundColourId, juce::Colours::orange);
-        roomYSlider.setColour(Slider::trackColourId, juce::Colours::orange);
+    if(micYSlider.getValue()>=roomYSlider.getValue()-0.01f){
+        micYSlider.setColour(Slider::backgroundColourId, juce::Colours::red);
+        micYSlider.setColour(Slider::trackColourId, juce::Colours::red);
+        roomYSlider.setColour(Slider::backgroundColourId, juce::Colours::red);
+        roomYSlider.setColour(Slider::trackColourId, juce::Colours::red);
     } else {
         micYSlider.setColour(Slider::backgroundColourId, juce::Colours::black);
+        micYSlider.setColour(Slider::trackColourId, juce::Colours::black);
         roomYSlider.setColour(Slider::backgroundColourId, juce::Colours::black);
         roomYSlider.setColour(Slider::trackColourId, juce::Colours::black);
         
     }
     
-    if(sourceYSlider.getValue()>=roomYSlider.getValue()-0.01f || sourceYSlider.getValue()<=0.01f){
-        sourceYSlider.setColour(Slider::backgroundColourId, juce::Colours::orange);
-        roomYSlider.setColour(Slider::backgroundColourId, juce::Colours::orange);
-        roomYSlider.setColour(Slider::trackColourId, juce::Colours::orange);
+    if(sourceYSlider.getValue()>=roomYSlider.getValue()-0.01f ){
+        sourceYSlider.setColour(Slider::backgroundColourId, juce::Colours::red);
+        sourceYSlider.setColour(Slider::trackColourId, juce::Colours::red);
+        roomYSlider.setColour(Slider::backgroundColourId, juce::Colours::red);
+        roomYSlider.setColour(Slider::trackColourId, juce::Colours::red);
     } else {
         sourceYSlider.setColour(Slider::backgroundColourId, juce::Colours::black);
+        sourceYSlider.setColour(Slider::trackColourId, juce::Colours::black);
         roomYSlider.setColour(Slider::backgroundColourId, juce::Colours::black);
         roomYSlider.setColour(Slider::trackColourId, juce::Colours::black);
         

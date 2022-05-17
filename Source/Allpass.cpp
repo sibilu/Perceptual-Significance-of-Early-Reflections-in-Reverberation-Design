@@ -26,13 +26,14 @@ void Allpass::prepareFilter(dsp::ProcessSpec spec){
     apf11.prepare(spec);
     apf12.prepare(spec);
     apf13.prepare(spec);
+   /*
     apf14.prepare(spec);
     apf15.prepare(spec);
     apf16.prepare(spec);
     apf17.prepare(spec);
     apf18.prepare(spec);
     apf19.prepare(spec);
-   /*
+   
     apf20.prepare(spec);
     apf21.prepare(spec);
     apf22.prepare(spec);
@@ -61,13 +62,13 @@ void Allpass::prepareFilter(dsp::ProcessSpec spec){
     apf11.reset();
     apf12.reset();
     apf13.reset();
+    /*
     apf14.reset();
     apf15.reset();
     apf16.reset();
     apf17.reset();
     apf18.reset();
     apf19.reset();
-    /*
     apf20.reset();
     apf21.reset();
     apf22.reset();
@@ -101,13 +102,14 @@ void Allpass::processBlock(dsp::AudioBlock<float> &inputBlock){
     apf11.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf12.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf13.process(dsp::ProcessContextReplacing<float> (inputBlock));
+    /*
     apf14.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf15.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf16.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf17.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf18.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf19.process(dsp::ProcessContextReplacing<float> (inputBlock));
-    /*
+    
     apf20.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf21.process(dsp::ProcessContextReplacing<float> (inputBlock));
     apf22.process(dsp::ProcessContextReplacing<float> (inputBlock));
@@ -152,13 +154,14 @@ void Allpass::updateFilter(){
     *apf11.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf12.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf13.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
+    /*
     *apf14.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf15.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf16.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf17.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf18.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf19.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
-    /*
+    
     *apf20.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf21.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
     *apf22.state = *dsp::IIR::Coefficients<float>::makeAllPass(Fs, 240);
