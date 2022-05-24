@@ -354,10 +354,10 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
             // set position of source, mic, and calc junctions
             reflections.setPositions(sourceXLim,sourceYLim,micXLim,micYLim);
             
-            float tailGain = 1-0.5*(reflections.sourceMicStereoGain(0));
+            float tailGain = 2*(1*(0.5*reflections.sourceMicStereoGain(0))+(0.5*reflections.sourceMicStereoGain(1)));
             // direct sound on/off button
             if(directSoundOnOff){
-                directSound = inputBlock.getSample(channel,sample)*reflections.sourceMicStereoGain(channel);
+                directSound = inputBlock.getSample(channel,sample)*reflections.sourceMicStereoGain(channel)*0.2;
             } else {
                 directSound = 0.f;
             }

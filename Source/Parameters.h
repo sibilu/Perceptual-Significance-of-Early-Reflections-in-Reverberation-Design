@@ -134,7 +134,7 @@ false, true, true, AudioProcessorParameter::Category::genericParameter,false)));
                                                 "Room x (width)",
                                                 "m",
                                                 {0.3f, 15.f, 0.01f},
-                                                10.f,
+                                                8.8f,
                                                 [](float value) -> String{
     
         return String(value,0);
@@ -148,7 +148,7 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
                                                 "Room z (depth)",
                                                 "",
                                                 {0.3f, 15.f, 0.01f},
-                                                10.f,
+                                                8.8f,
                                                 [](float value) -> String{
     
         return String(value,2);
@@ -161,7 +161,7 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
                                                 "Room y (height)",
                                                 "",
                                                 {1.1f, 15.f, 0.01f},
-                                                5.f,
+                                                3.4f,
                                                 [](float value) -> String{
         return String(value,2);
         
@@ -176,7 +176,7 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
                                                 "Mic x",
                                                 "",
                                                 {0.01f, 15.f, 0.01f},
-                                                2.f,
+                                                7.f,
                                                 [](float value) -> String{
         return String(value,2);
         
@@ -191,7 +191,7 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
                                                 "Mic y",
                                                 "",
                                                 {0.01f, 15.f, 0.01f},
-                                                4.f,
+                                                8.f,
                                                 [](float value) -> String{
         return String(value,2);
         
@@ -206,7 +206,7 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
                                                 "Source x",
                                                 "",
                                                 {0.01f, 15.f, 0.01f},
-                                                7.f,
+                                                3.f,
                                                 [](float value) -> String{
         return String(value,2);
         
@@ -221,7 +221,7 @@ false, true, false, AudioProcessorParameter::Category::genericParameter,false)))
                                                 "Source y",
                                                 "",
                                                 {0.01f, 15.f, 0.01f},
-                                                5.f,
+                                                6.f,
                                                 [](float value) -> String{
         return String(value,2);
         
