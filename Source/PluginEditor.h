@@ -105,8 +105,8 @@ private:
     AudioProcessorValueTreeState::ButtonAttachment directSoundButtonAttachment;
   
     
-      TextButton filtersButton;
-      AudioProcessorValueTreeState::ButtonAttachment filtersButtonAttachment;
+    TextButton filtersButton;
+    AudioProcessorValueTreeState::ButtonAttachment filtersButtonAttachment;
     
     
     // CONVOLUTION

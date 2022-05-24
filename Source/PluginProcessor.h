@@ -125,53 +125,35 @@ private:
     Reflections reflections;
     Absorption absorption;
   
+    // BUTTON BOOLS
     bool directSoundOnOff = true;
     bool erOnOff = true;
     bool tailOnOff = true;
-    
-    
     bool apfOnOff = true;
     bool convOnOff = true;
     
-    // RANDOM ALLPASS
-
-    int allPassOrder;
-    double dump;
-    double aFrontBack[1024], bFrontBack[1024];
-    double aRightLeft[1024], bRightLeft[1024];
-    double aCeilingFloor[1024], bCeilingFloor[1024];
-    
+    // BUFFER AND BLOCKS
     AudioBuffer<float> outBuffer[6];
     dsp::AudioBlock<float> outputBlock[6];
+    
+    // PREDELAY
     dsp::DelayLine<float,dsp::DelayLineInterpolationTypes::Linear> predelayLine {100000};
 
-    
+    // SIGNALS
     float directSound;
     float convolutedSignal;
     float directAndER;
     float directAndERAndTail;
-    
-    
+    float outConv;
+
+    // REFLECTIONS
     float frontReflection;
-    
     float backReflection;
-    
     float rightReflection;
-    
     float leftReflection;
-    
     float ceilingReflection;
-    
     float floorReflection;
      
-    
-    float outConv;
-    
-    // WAVEFORM
-    AudioBuffer<float> mWaveForm;
-
-    
-    
 
     // APF
     Allpass allPass1;

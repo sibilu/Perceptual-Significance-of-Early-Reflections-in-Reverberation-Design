@@ -12,7 +12,7 @@ Reflections::~Reflections(){
 
 void Reflections::prepare(dsp::ProcessSpec spec){
  
-    
+    // PREPARE DELAYS
     micSourceDelay.prepare(spec);
     wallFrontDelay.prepare(spec);
     wallBackDelay.prepare(spec);
@@ -21,9 +21,7 @@ void Reflections::prepare(dsp::ProcessSpec spec){
     wallCeilingDelay.prepare(spec);
     wallFloorDelay.prepare(spec);
    
-    
-    
-
+    // RESET DELAYS
     micSourceDelay.reset();
     wallFrontDelay.reset();
     wallBackDelay.reset();
@@ -32,6 +30,7 @@ void Reflections::prepare(dsp::ProcessSpec spec){
     wallCeilingDelay.reset();
     wallFloorDelay.reset();
 
+    // PREPARE ABSORPTION FILTERS
     wallFrontAbsorption.prepareFilter(spec);
     wallBackAbsorption.prepareFilter(spec);
     wallRightAbsorption.prepareFilter(spec);
@@ -49,7 +48,8 @@ float Reflections::getDist(int junctionIndex){
 
 void Reflections::processBlock(dsp::AudioBlock<float> inputBlock, dsp::AudioBlock<float> & outputBlock0, dsp::AudioBlock<float> & outputBlock1, dsp::AudioBlock<float> & outputBlock2, dsp::AudioBlock<float> & outputBlock3, dsp::AudioBlock<float> & outputBlock4, dsp::AudioBlock<float> & outputBlock5){
     
-    //micSourceDelay.process(juce::dsp::ProcessContextNonReplacing<float> (inputBlock, outputBlock0));
+    
+    // PROCESS BLOCK USING NON REPLACING METHOD
     wallFrontDelay.process(juce::dsp::ProcessContextNonReplacing<float> (inputBlock, outputBlock0));
     wallBackDelay.process(juce::dsp::ProcessContextNonReplacing<float> (inputBlock, outputBlock1));
     wallRightDelay.process(juce::dsp::ProcessContextNonReplacing<float> (inputBlock, outputBlock2));
@@ -57,17 +57,13 @@ void Reflections::processBlock(dsp::AudioBlock<float> inputBlock, dsp::AudioBloc
     wallCeilingDelay.process(juce::dsp::ProcessContextNonReplacing<float> (inputBlock, outputBlock4));
     wallFloorDelay.process(juce::dsp::ProcessContextNonReplacing<float> (inputBlock, outputBlock5));
 
+    // FILTER ON/OFF BUTTON
     if(filtersOnOff){
     wallFrontAbsorption.processBlock(outputBlock0);
-    
     wallBackAbsorption.processBlock(outputBlock1);
-
     wallRightAbsorption.processBlock(outputBlock2);
-
     wallLeftAbsorption.processBlock(outputBlock3);
-
     wallCeilingAbsorption.processBlock(outputBlock4);
-
     wallFloorAbsorption.processBlock(outputBlock5);
     } else {
         
@@ -99,14 +95,10 @@ float Reflections::junctionMicStereoGain(int junctionIndex, int channel){
             break;
     }
     return junctionGain;
-    
-    
 }
 
 
 float Reflections::invDistLaw(int channel){
-
-
     float distAtt = 1/fmax(listenerPos.distanceTo(sourcePos),0.4);
     return distAtt;
 }
@@ -146,16 +138,6 @@ void Reflections:: update(int materialFrontBack, int materialRightLeft, int mate
     wallLeftAbsorption.updateFilter(materialRightLeft);
     wallCeilingAbsorption.updateFilter(materialCeilingFloor);
     wallFloorAbsorption.updateFilter(materialCeilingFloor);
-
-    
-  //  auto coeffs = dsp::IIR::Coefficients<float>::makeFirstOrderAllPass(Fs, 60);
-  //  *apfFront.state = *coeffs;
-  //  *apfBack.state = *coeffs;
- //   *apfRight.state = *coeffs;
- //   *apfLeft.state = *coeffs;
- //   *apfCeiling.state = *coeffs;
- //   *apfFloor.state = *coeffs;
-    
     
 
     for (int i = 0; i < junctionCount; i++){
@@ -175,19 +157,16 @@ void Reflections:: update(int materialFrontBack, int materialRightLeft, int mate
         // FIRST REFLECTION TIMES
         firstReflectionTimes[i] =  combinedDistances[i]/speedOfSound*Fs;
         
-        // firstReflectionDelays[i].setDelaySamples(firstReflectionTimes[i]);
     }
     
-     micToSourceDelay = listenerPos.distanceTo(sourcePos)/speedOfSound*Fs;
-    
-    
+    micToSourceDelay = listenerPos.distanceTo(sourcePos)/speedOfSound*Fs;
+
     wallFrontDelay.setDelay(jmax(firstReflectionTimes[0] - micToSourceDelay, 0.0f));
     wallBackDelay.setDelay(jmax(firstReflectionTimes[1]-micToSourceDelay, 0.0f));
     wallRightDelay.setDelay(jmax(firstReflectionTimes[2] - micToSourceDelay, 0.0f));
     wallLeftDelay.setDelay(jmax(firstReflectionTimes[3] - micToSourceDelay, 0.0f));
     wallCeilingDelay.setDelay(jmax(firstReflectionTimes[4] - micToSourceDelay, 0.0f));
     wallFloorDelay.setDelay(jmax(firstReflectionTimes[5] - micToSourceDelay, 0.0f));
-   // DBG(firstReflectionTimes[0]);
 }
 
 
@@ -215,12 +194,12 @@ float Reflections::largestDelay()
 
 void Reflections::setPositions(float sourceX, float sourceY, float micX, float micY){
     
-    // set source position
+    // SET SOURCE POSITION
     sourcePos.setY(sourceY);
     sourcePos.setX(sourceX);
     sourcePos.setZ(1.1f);
     
-    // set source position
+    // SET LISTENER POSITION
     listenerPos.setY(micY);
     listenerPos.setX(micX);
     listenerPos.setZ(1.1f);
@@ -230,6 +209,7 @@ void Reflections::setPositions(float sourceX, float sourceY, float micX, float m
 
 
 void Reflections::setSize(float roomX, float roomY, float roomZ){
+    // SET ROOM SIZE
     this->roomX = roomX;
     this->roomY = roomY;
     this->roomZ = roomZ;
@@ -237,7 +217,7 @@ void Reflections::setSize(float roomX, float roomY, float roomZ){
 }
 
 float Reflections::setSpeedOfSound(int temp){
-//  using truncated Taylor expansion to estimate v at different temperatures
+//  SET SPEED OF SOUND BASED ON ROOM TEMEPRATURE USING TRUNCATED TAYLOR EXPANSION TO ESTIMATE V AT DIFFERENT TEMPERATURES
     
     speedOfSound = 331+(0.6)*temp;
     return speedOfSound;

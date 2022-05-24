@@ -27,7 +27,6 @@
 		0FD9EB1F5D8CB7248A5BB56A /* Shared Code */ = {isa = PBXBuildFile; fileRef = 20225691A596C3ED2692B90A; };
 		12F50987AABD9241E3CEA909 /* Position.cpp */ = {isa = PBXBuildFile; fileRef = 16BAE2707BA760682DF8F3F1; };
 		15605CECBDFAA9F9F3C6FB67 /* RecentFilesMenuTemplate.nib */ = {isa = PBXBuildFile; fileRef = 6E6DBE17926E754471AD0641; };
-		17BF1EFB6806C176B0C6B735 /* am_IIRFilter.cpp */ = {isa = PBXBuildFile; fileRef = 84AC1EC0FD3B87B11E69DAAC; };
 		1A34AFE6D04C61EF042154C6 /* Predelay.cpp */ = {isa = PBXBuildFile; fileRef = 3076C459F243D848017510CB; };
 		1B02F4742861854519196EAB /* Allpass.cpp */ = {isa = PBXBuildFile; fileRef = 73B2F3A62D0A8F094CC8F6DE; };
 		1D1660F6E81E0232BB76C460 /* VST3 */ = {isa = PBXBuildFile; fileRef = 3FA5DFA4B2A86BFB15342691; };
@@ -93,7 +92,6 @@
 		3FA5DFA4B2A86BFB15342691 /* VST3 */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NewProject.vst3; sourceTree = BUILT_PRODUCTS_DIR; };
 		41AE27631463ECA971DC82B4 /* CoreAudioKit.framework */ /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		4479869D4DBD4B167D94724E /* JucePluginDefines.h */ /* JucePluginDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JucePluginDefines.h; path = ../../JuceLibraryCode/JucePluginDefines.h; sourceTree = SOURCE_ROOT; };
-		461E66B886FE4F0C7B49E997 /* am_IIRFilter.h */ /* am_IIRFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = am_IIRFilter.h; path = ../../Source/am_IIRFilter.h; sourceTree = SOURCE_ROOT; };
 		4D63C19C59A6260CC2847A5B /* AudioUnit.framework */ /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		50844FB75D3010AEA83BD8E4 /* include_juce_audio_formats.mm */ /* include_juce_audio_formats.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_formats.mm; path = ../../JuceLibraryCode/include_juce_audio_formats.mm; sourceTree = SOURCE_ROOT; };
 		51324E5D4B5217C21BEEC7AF /* JuceHeader.h */ /* JuceHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = ../../JuceLibraryCode/JuceHeader.h; sourceTree = SOURCE_ROOT; };
@@ -118,7 +116,6 @@
 		7AD7FCF6D38AA8BB69D23945 /* include_juce_audio_devices.mm */ /* include_juce_audio_devices.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_devices.mm; path = ../../JuceLibraryCode/include_juce_audio_devices.mm; sourceTree = SOURCE_ROOT; };
 		83DCC657ED563E2141C7C311 /* DiscRecording.framework */ /* DiscRecording.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiscRecording.framework; path = System/Library/Frameworks/DiscRecording.framework; sourceTree = SDKROOT; };
 		83F713256FD5B7B8BD2F5D00 /* juce_dsp */ /* juce_dsp */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_dsp; path = ../../../../../../../Applications/JUCE/modules/juce_dsp; sourceTree = SOURCE_ROOT; };
-		84AC1EC0FD3B87B11E69DAAC /* am_IIRFilter.cpp */ /* am_IIRFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = am_IIRFilter.cpp; path = ../../Source/am_IIRFilter.cpp; sourceTree = SOURCE_ROOT; };
 		860B925240DA6D7E54C182E6 /* erfilter.png */ /* erfilter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = erfilter.png; path = ../../../../../Dropbox/SMC/graphicsERTool/erfilter.png; sourceTree = SOURCE_ROOT; };
 		888C4F6CC936BA8CDAED0480 /* RefCountedAudioBuffer.h */ /* RefCountedAudioBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RefCountedAudioBuffer.h; path = ../../Source/Convolution/RefCountedAudioBuffer.h; sourceTree = SOURCE_ROOT; };
 		8C074865516F16FA48F33586 /* Parameters.h */ /* Parameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Parameters.h; path = ../../Source/Parameters.h; sourceTree = SOURCE_ROOT; };
@@ -326,8 +323,6 @@
 				38788253E66DB087B1859B31,
 				350C82FDDFE87DE1D15174D1,
 				D6AAFB2E74532FB21F54BFAC,
-				84AC1EC0FD3B87B11E69DAAC,
-				461E66B886FE4F0C7B49E997,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -593,7 +588,6 @@
 				0682DE871FA918211E76399F,
 				905BB4097A34A58CC58A494F,
 				5FE10D5C474025CC9BD5D806,
-				17BF1EFB6806C176B0C6B735,
 				AB4309AFBD99D83254C75F14,
 				8021F87EE6F571FDF4FA521A,
 				74CF7E8F4D197AD5286CB2E6,

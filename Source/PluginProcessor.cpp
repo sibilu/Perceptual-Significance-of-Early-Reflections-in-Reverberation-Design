@@ -187,7 +187,7 @@ void EarlyReflectionsAudioProcessor::setImpulseResponse(const AudioSampleBuffer&
 void EarlyReflectionsAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     
-    // CONV
+    // CONVOLUTION
     mConvolutionManager[0].setBufferSize(samplesPerBlock);
     mConvolutionManager[1].setBufferSize(samplesPerBlock);
     
@@ -219,9 +219,6 @@ void EarlyReflectionsAudioProcessor::prepareToPlay (double sampleRate, int sampl
     allPass5.prepareFilter(spec);
     allPass6.setSampleRate(sampleRate);
     allPass6.prepareFilter(spec);
-    
-   // updateMicCartesianCoordinates();
-   // updateSourceCartesianCoordinates();
     
     scratchBuffer.setSize (getNumInputChannels(), samplesPerBlock);
     
@@ -270,12 +267,12 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     int faces = 6;
     
+    // INSTANTIATE ALL OUTBUFFERS
     for(int i = 0; i<faces; i++){
         outBuffer[i]= AudioBuffer<float>(buffer.getNumChannels(), buffer.getNumSamples());
     }
     
     
-    // TO DO - FOR CPU? IF ROOMX IS NOT EQUAL TO SLIDER THEN DO THIS
     reflections.setSpeedOfSound(temp);
     reflections.setSize(roomX.getValue(), roomY.getValue(), roomZ.getValue());
     
@@ -290,6 +287,7 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
         outputBlock[i] = dsp::AudioBlock<float>(outBuffer[i]);
     }
     
+    // RELFECTION AND ABSORPTION
     reflections.update(materialFrontBack, materialRightLeft, materialCeilingFloor);
     reflections.processBlock(inputBlock,outputBlock[0], outputBlock[1], outputBlock[2], outputBlock[3], outputBlock[4], outputBlock[5]);
     
@@ -339,7 +337,7 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
                 // get output from convolution
                 const float* y = mConvolutionManager[channel].getOutputBuffer();
                 
-                // write to the float pointer??
+                // write to the float pointer
                 memcpy(channelDataTemp, y, buffer.getNumSamples() * sizeof(float));
                 
             } else{
@@ -364,11 +362,14 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
             
           
             
+            // CALL ER FUNCTION
             getEarlyReflections(channel, sample);
             
             
           
-            // add direct sound with all 6 reflections
+            // SUM ALL REFLECTIONS AND DIRECT SOUND
+            
+            // ER ON/OFF BUTTON
             if (erOnOff){
                 directAndER =  directSound + frontReflection + backReflection + rightReflection + leftReflection + ceilingReflection + floorReflection;
 
@@ -379,8 +380,8 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
             
             
             
-          
-                convolutedSignal = tmpBuffer.getSample(channel, sample);
+        
+            convolutedSignal = tmpBuffer.getSample(channel, sample);
 
           
             
@@ -389,18 +390,21 @@ void EarlyReflectionsAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
             
             
             
-            // delay the channelDataTemp signal
+            // DELAY THE SIGNAL GOING TO THE CONVOLUTION BASED ON THE LENGTH OF THE LONGEST FIRST-ORDER DELAY LINE
              predelayLine.pushSample(channel, convolutedSignal);
              convolutedSignal = predelayLine.popSample(channel, reflections.largestDelay()-reflections.micToSourceDelay);
             
             
+            // TAIL BUTTON ON/OFF
             if (tailOnOff){
                 directAndERAndTail = directAndER + tailGain*convolutedSignal;;
 
             } else {
                 directAndERAndTail = directAndER;
             }
-            // write to the buffer
+            
+            
+            // WRITE TO THE BUFFER
             buffer.setSample(channel, sample, directAndERAndTail);
             
         }

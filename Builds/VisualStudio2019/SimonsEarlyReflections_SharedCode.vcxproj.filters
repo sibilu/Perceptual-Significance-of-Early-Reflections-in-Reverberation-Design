@@ -502,9 +502,6 @@
     <ClCompile Include="..\..\Source\Absorption.cpp">
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\am_IIRFilter.cpp">
-      <Filter>SimonsEarlyReflections\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\swam\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
       <Filter>JUCE Modules\juce_audio_basics\buffers</Filter>
     </ClCompile>
@@ -2776,9 +2773,6 @@
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Absorption.h">
-      <Filter>SimonsEarlyReflections\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\am_IIRFilter.h">
       <Filter>SimonsEarlyReflections\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\swam\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">

@@ -19,7 +19,7 @@ void Absorption::prepareFilter(dsp::ProcessSpec spec){
 
 void Absorption::updateFilter(int material) {
     
-    
+    // SWITCH MATERIALS BASED ON THE DROP DOWN MENU 
     
     switch (material) {
         case 1:{

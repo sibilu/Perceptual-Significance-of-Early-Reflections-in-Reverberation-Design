@@ -8,7 +8,6 @@ class Predelay {
     
 public:
     
-    // Constructor function (special function - no return type, name = Class name)
     Predelay();
     
     Predelay(float delay);
@@ -27,7 +26,6 @@ public:
 private:
     
     double Fs;
-   // int speedOfSound = 343; // m/sec
     
     
     // DSP DELAY LINE FOR BLOCK PROCESSING

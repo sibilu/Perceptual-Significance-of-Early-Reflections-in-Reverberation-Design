@@ -58,24 +58,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
 
 
 {
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    /*
-     sourceCoordinateLabel.setFont (juce::Font (16.0f, juce::Font::plain));
-     sourceCoordinateLabel.setText ("Source: "+ (String)audioProcessor.sourceXLim + ", " +(String)audioProcessor.sourceYLim, juce::dontSendNotification);
-     sourceCoordinateLabel.setColour (juce::Label::textColourId, juce::Colours::black);
-     sourceCoordinateLabel.setJustificationType (juce::Justification::left);
-     sourceCoordinateLabel.setBounds(685, 240, 200, 100);
-     addAndMakeVisible (sourceCoordinateLabel);
-     
-     
-     micCoordinateLabel.setFont (juce::Font (16.0f, juce::Font::plain));
-     micCoordinateLabel.setText ("Mic: "+ (String)audioProcessor.micXLim + ", " + (String)audioProcessor.micYLim, juce::dontSendNotification);
-     micCoordinateLabel.setColour (juce::Label::textColourId, juce::Colours::black);
-     micCoordinateLabel.setJustificationType (juce::Justification::left);
-     micCoordinateLabel.setBounds(685, 260, 200, 100);
-     addAndMakeVisible (micCoordinateLabel);
-     */
+ 
     // add items to the combo-box
     absorptionBoxFrontBack.setBounds(15, 30, 160, 20);
     absorptionBoxFrontBack.addItem("Carpet: heavy on concrete", 1);
@@ -162,18 +145,13 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     
     // SOURCE X SLIDER
     
-    // sourceXSlider.addListener(this);
     sourceXSlider.setSliderStyle(juce::Slider::LinearHorizontal);
     sourceXSlider.setBounds(275, 100, 100, 100);
     sourceXSlider.setTextBoxStyle(juce::Slider::TextBoxBelow,false,50,30);
     sourceXSlider.setColour(Slider::thumbColourId, juce::Colours::skyblue);
-
     sourceXSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
-    //  sourceXSlider.setRange(0.01, 35.f, 0.01);;
-    
-    //    sourceXSlider.getValueObject().referTo(audioProcessor.sourceX);
-    
     addAndMakeVisible(sourceXSlider);
+    
     sourceXLabel.setText("Source x", dontSendNotification);
     sourceXLabel.setColour (Label::textColourId, juce::Colours::black);
     sourceXLabel.attachToComponent(&sourceXSlider,true);
@@ -183,17 +161,11 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     
     // SOURCE Y SLIDER
     
-    // sourceYSlider.addListener(this);
     sourceYSlider.setSliderStyle(juce::Slider::LinearVertical);
     sourceYSlider.setBounds(210, 30, 100, 100);
     sourceYSlider.setTextBoxStyle(juce::Slider::TextBoxLeft,false,50,30);
     sourceYSlider.setColour(Slider::thumbColourId, juce::Colours::skyblue);
-
     sourceYSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
-    //  sourceYSlider.setRange(0.01, 35.f, 0.01);
-    
-    //    sourceYSlider.getValueObject().referTo(audioProcessor.sourceY);
-    
     addAndMakeVisible(sourceYSlider);
     
     sourceYLabel.setText("Source y", dontSendNotification);
@@ -203,45 +175,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     addAndMakeVisible(sourceYLabel);
     
     
-    
-    /*
-     // SOURCE POLAR MAGNITUDE
-     
-     sourcePolarDistanceSlider.setSliderStyle(juce::Slider::LinearVertical);
-     sourcePolarDistanceSlider.setBounds(210, 30, 100, 150);
-     sourcePolarDistanceSlider.setTextBoxStyle(juce::Slider::TextBoxLeft,false,50,30);
-     sourcePolarDistanceSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
-     sourcePolarDistanceSlider.setColour(Slider::thumbColourId, juce::Colours::seagreen);
-     
-     addAndMakeVisible(sourcePolarDistanceSlider);
-     
-     sourcePolarDistanceLabel.setText("Source Dist", dontSendNotification);
-     sourcePolarDistanceLabel.setColour (Label::textColourId, juce::Colours::black);
-     sourcePolarDistanceLabel.attachToComponent(&sourcePolarDistanceSlider,false);
-     sourcePolarDistanceLabel.setJustificationType(Justification::centred);
-     addAndMakeVisible(sourcePolarDistanceLabel);
-     
-     
-     // POLAR ANGLE KNOB
-     
-     sourcePolarAngleSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
-     sourcePolarAngleSlider.setBounds(195, 220, 180, 180);
-     sourcePolarAngleSlider.setTextBoxStyle(juce::Slider::NoTextBox,false,50,30);
-     sourcePolarAngleSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
-     sourcePolarAngleSlider.setColour(Slider::thumbColourId, juce::Colours::seagreen);
-     // sourcePolarAngleSlider.setRange(-MathConstants<float>::halfPi, MathConstants<float>::halfPi, 0.01);;
-     //   sourcePolarAngleSlider.getValueObject().referTo(audioProcessor.sourcePolAng);
-     sourcePolarAngleSlider.setRotaryParameters(0.75*MathConstants<float>::twoPi, 1.25*MathConstants<float>::twoPi, true);
-     addAndMakeVisible(sourcePolarAngleSlider);
-     
-     sourcePolarAngleLabel.setText("Source Ang", dontSendNotification);
-     sourcePolarAngleLabel.setColour (Label::textColourId, juce::Colours::black);
-     sourcePolarAngleLabel.attachToComponent(&sourcePolarAngleSlider,false);
-     sourcePolarAngleLabel.setJustificationType(Justification::centred);
-     addAndMakeVisible(sourcePolarAngleLabel);
-     
-     */
-    
+ 
     
     
     // MIC X SLIDER
@@ -251,11 +185,7 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     micXSlider.setBounds(465, 100, 100, 100);
     micXSlider.setTextBoxStyle(juce::Slider::TextBoxBelow,false,50,30);
     micXSlider.setColour(Slider::thumbColourId, juce::Colours::skyblue);
-
     micXSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
-    //   micXSlider.setRange(0.01, 35.f, 0.01);;
-    //   micXSlider.getValueObject().referTo(audioProcessor.micX);
-    
     addAndMakeVisible(micXSlider);
     
     micXLabel.setText("Mic x", dontSendNotification);
@@ -267,15 +197,11 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     
     // MIC Y SLIDER
     
-    // micYSlider.addListener(this);
     micYSlider.setSliderStyle(juce::Slider::LinearVertical);
     micYSlider.setBounds(400, 30, 100, 100);
     micYSlider.setTextBoxStyle(juce::Slider::TextBoxLeft,false,50,30);
     micYSlider.setColour(Slider::thumbColourId, juce::Colours::skyblue);
-
     micYSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
-    //  micYSlider.setRange(0.01, 35.f, 0.01);;
-    //    micYSlider.getValueObject().referTo(audioProcessor.micY);
     addAndMakeVisible(micYSlider);
     
     micYLabel.setText("Mic y", dontSendNotification);
@@ -285,60 +211,14 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     addAndMakeVisible(micYLabel);
     
     
-    /*
-     // MIC POLAR MAGNITUDE
-     
-     //micPolarDistanceSlider.addListener(this);
-     micPolarDistanceSlider.setSliderStyle(juce::Slider::LinearVertical);
-     micPolarDistanceSlider.setBounds(430, 30, 100, 150);
-     micPolarDistanceSlider.setTextBoxStyle(juce::Slider::TextBoxLeft,false,50,30);
-     micPolarDistanceSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
-     micPolarDistanceSlider.setColour(Slider::thumbColourId, juce::Colours::seagreen);
-     
-     // micPolarDistanceSlider.setRange(0.01, 35.f, 0.01);;
-     //   micPolarDistanceSlider.getValueObject().referTo(audioProcessor.micPolDist);
-     
-     addAndMakeVisible(micPolarDistanceSlider);
-     
-     micPolarDistanceLabel.setText("Mic Dist", dontSendNotification);
-     micPolarDistanceLabel.setColour (Label::textColourId, juce::Colours::black);
-     micPolarDistanceLabel.attachToComponent(&micPolarDistanceSlider,false);
-     micPolarDistanceLabel.setJustificationType(Justification::centred);
-     addAndMakeVisible(micPolarDistanceLabel);
-     
-     
-     // POLAR ANGLE KNOB
-     
-     //micPolarAngleSlider.addListener(this);
-     micPolarAngleSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
-     micPolarAngleSlider.setBounds(415, 220, 180, 180);
-     micPolarAngleSlider.setTextBoxStyle(juce::Slider::NoTextBox,false,50,30);
-     micPolarAngleSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
-     micPolarAngleSlider.setColour(Slider::thumbColourId, juce::Colours::seagreen);
-     // micPolarAngleSlider.setRange(-MathConstants<float>::halfPi, MathConstants<float>::halfPi, 0.01);;
-     //   micPolarAngleSlider.getValueObject().referTo(audioProcessor.micPolAng);
-     micPolarAngleSlider.setRotaryParameters(0.75*MathConstants<float>::twoPi, 1.25*MathConstants<float>::twoPi, true);
-     addAndMakeVisible(micPolarAngleSlider);
-     
-     micPolarAngleLabel.setText("Mic Angle", dontSendNotification);
-     micPolarAngleLabel.setColour (Label::textColourId, juce::Colours::black);
-     micPolarAngleLabel.attachToComponent(&micPolarAngleSlider,false);
-     micPolarAngleLabel.setJustificationType(Justification::centred);
-     addAndMakeVisible(micPolarAngleLabel);
-     
-     */
+  
     // ROOM X SLIDER
     
-    //  roomXSlider.addListener(this);
     roomXSlider.setSliderStyle(juce::Slider::LinearHorizontal);
     roomXSlider.setBounds(685, 100, 100, 100);
     roomXSlider.setTextBoxStyle(juce::Slider::TextBoxBelow,false,50,30);
     roomXSlider.setColour(Slider::thumbColourId, juce::Colours::skyblue);
     roomXSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
-    //  roomXSlider.setRange(0.01f, 35.f, 0.01f);
-    
-    //   roomXSlider.getValueObject().referTo(audioProcessor.roomX);
-    
     addAndMakeVisible(roomXSlider);
     
     roomXLabel.setText("Room x (width)", dontSendNotification);
@@ -350,14 +230,11 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     
     // room Y SLIDER
     
-    // roomYSlider.addListener(this);
     roomYSlider.setSliderStyle(juce::Slider::LinearVertical);
     roomYSlider.setBounds(620, 30, 100, 100);
     roomYSlider.setTextBoxStyle(juce::Slider::TextBoxLeft,false,50,30);
     roomYSlider.setColour(Slider::thumbColourId, juce::Colours::skyblue);
     roomYSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
-    //  roomYSlider.setRange(0.01f, 35.f, 0.01f);;
-    //    roomYSlider.getValueObject().referTo(audioProcessor.roomY);
     addAndMakeVisible(roomYSlider);
     
     roomYLabel.setText("Room z (depth)", dontSendNotification);
@@ -368,14 +245,11 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     
     // room Z SLIDER
     
-    //  roomZSlider.addListener(this);
     roomZSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     roomZSlider.setBounds(800, 30, 100, 100);
     roomZSlider.setTextBoxStyle(juce::Slider::TextBoxBelow,false,50,30);
     roomZSlider.setColour(Slider::thumbColourId, juce::Colours::skyblue);
     roomZSlider.setColour(Slider::textBoxTextColourId, juce::Colours::black);
-    // roomZSlider.setRange(0.01f, 35.f, 0.01f);;
-    //   roomZSlider.getValueObject().referTo(audioProcessor.roomZ);
     addAndMakeVisible(roomZSlider);
     
     roomZLabel.setText("Room y (height)", dontSendNotification);
@@ -439,29 +313,12 @@ tailButtonAttachment(*audioProcessor.getPluginState(), getParameterIdentifier(Pa
     allPassButton.setColour(TextButton::textColourOffId, juce::Colours::white);
     addAndMakeVisible (allPassButton);
     
-    
-    
-    
-    
     mButtonChooseIR.setButtonText ("Select Tail");
     mButtonChooseIR.setBounds(467, 370, 128, 30);
     mButtonChooseIR.setClickingTogglesState (true);
     mButtonChooseIR.setColour(TextButton::buttonColourId, juce::Colours::grey);
     mButtonChooseIR.setColour(TextButton::buttonOnColourId, juce::Colours::grey);
-    
     addAndMakeVisible (mButtonChooseIR);
-    
-    /*
-    convolutionButton.setButtonText ("Conv.");
-    convolutionButton.setBounds(805, 270, 88, 100);
-    convolutionButton.setClickingTogglesState (true);
-    convolutionButton.setColour(TextButton::buttonColourId, juce::Colours::grey);
-    convolutionButton.setColour(TextButton::buttonOnColourId, juce::Colours::turquoise);
-    convolutionButton.setColour(TextButton::textColourOnId, juce::Colours::black);
-    convolutionButton.setColour(TextButton::textColourOffId, juce::Colours::white);
-    // addAndMakeVisible (convolutionButton);
-    
-    */
     
     
     audioProcessor.addChangeListener(this);
@@ -494,11 +351,12 @@ void EarlyReflectionsAudioProcessorEditor::paint (juce::Graphics& g)
     int offsetDepth = 0.25*roomYSlider.getValue()*cubeSize;
     int offsetWidth = 0.5*roomXSlider.getValue()*cubeSize;
     int offsetHeight = 0.5*roomZSlider.getValue()*cubeSize;
-    /*
-    juce::Point<float> point1 (startPosX,startPosY);
-    g.drawEllipse(startPosX-offsetWidth+sourceXSlider.getValue()*cubeSize+sourceYSlider.getValue()*cubeSize*2, startPosY-offsetDepth-sourceYSlider.getValue()*cubeSize, 1, 1, 4);
-
-    */
+   
+    
+    // DYNAMIC VISUALIZATION OF ROOM DIMENSIONS.
+    
+    
+    // FRONT SQUARE
     
     juce::Line<float> line1 (juce::Point<float> (startPosX-offsetDepth-offsetWidth, startPosY+offsetDepth-offsetHeight),
                              juce::Point<float> (startPosX-offsetDepth+offsetWidth, startPosY+offsetDepth-offsetHeight));
@@ -571,6 +429,10 @@ void EarlyReflectionsAudioProcessorEditor::paint (juce::Graphics& g)
     g.drawLine (line12, 2.0f);
     
     
+    
+    
+    
+    // IMAGES FOR VISUALIZATION OF STATE
     Image direct = ImageCache::getFromMemory(BinaryData::direct_png, BinaryData::direct_pngSize);
     
     Image er = ImageCache::getFromMemory(BinaryData::er_png, BinaryData::er_pngSize);
@@ -586,6 +448,7 @@ void EarlyReflectionsAudioProcessorEditor::paint (juce::Graphics& g)
   
     
     
+    // CHANGE OPACITY OF IMAGES ON GUI BASED ON BUTTON INPUT
     
     if(earlyReflectionsButton.getToggleState() == true && allPassButton.getToggleState()==true && filtersButton.getToggleState() == true){
         g.setOpacity(1);
@@ -681,14 +544,7 @@ void EarlyReflectionsAudioProcessorEditor::resized()
 
 void EarlyReflectionsAudioProcessorEditor::changeListenerCallback(ChangeBroadcaster* source) {
     updateSliderColours();
-    
-    /*
-     sourceCoordinateLabel.setText ("Source: "+ (String)audioProcessor.sourceXLim + ", " +(String)audioProcessor.sourceYLim, juce::dontSendNotification);
-     micCoordinateLabel.setText ("Mic: "+ (String)audioProcessor.micXLim + ", " +(String)audioProcessor.micYLim, juce::dontSendNotification);
-     */
     repaint();
-    
-    
     
 }
 
@@ -744,7 +600,6 @@ void EarlyReflectionsAudioProcessorEditor::updateSliderColours(){
         sourceYSlider.setColour(Slider::trackColourId, juce::Colours::black);
         roomYSlider.setColour(Slider::backgroundColourId, juce::Colours::black);
         roomYSlider.setColour(Slider::trackColourId, juce::Colours::black);
-        
         
     }
     

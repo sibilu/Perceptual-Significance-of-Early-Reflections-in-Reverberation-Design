@@ -46,9 +46,6 @@
       <FILE id="DMPoqU" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="f1Jb00" name="Absorption.cpp" compile="1" resource="0" file="Source/Absorption.cpp"/>
       <FILE id="E0Uqae" name="Absorption.h" compile="0" resource="0" file="Source/Absorption.h"/>
-      <FILE id="ie7RDC" name="am_IIRFilter.cpp" compile="1" resource="0"
-            file="Source/am_IIRFilter.cpp"/>
-      <FILE id="J5W9j5" name="am_IIRFilter.h" compile="0" resource="0" file="Source/am_IIRFilter.h"/>
     </GROUP>
     <FILE id="L7PaIJ" name="tailonly.png" compile="0" resource="1" file="../../../Dropbox/SMC/graphicsERTool/tailonly.png"/>
     <FILE id="J1GMCP" name="erapf.png" compile="0" resource="1" file="../../../Dropbox/SMC/graphicsERTool/erapf.png"/>
